@@ -61,14 +61,14 @@ jobs:
           RUSTC_WRAPPER: sccache
         run: |
           rustc --version
-          cargo build --workspace --exclude pyembed --exclude pyembed-bench --exclude pyoxy --exclude python-oxidized-importer
-          cargo test --workspace --exclude pyembed --exclude pyembed-bench --exclude pyoxy --exclude python-oxidized-importer --no-run
+          cargo build --workspace
+          cargo test --workspace --no-run
 
       - name: Test Workspace
         env:
           RUSTC_WRAPPER: sccache
         run: |
-          cargo test --workspace --exclude pyembed --exclude pyembed-bench --exclude pyoxy --exclude python-oxidized-importer
+          cargo test --workspace
 
       - uses: actions-rs/clippy@master
         if: ${{ matrix.rust_toolchain == 'stable' || matrix.rust_toolchain == 'beta' }}
