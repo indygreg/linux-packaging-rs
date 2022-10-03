@@ -40,6 +40,10 @@ opt-level = 3
 opt-level = 3
 [profile.test.package.miniz_oxide]
 opt-level = 3
+[profile.dev.package.num-bigint-dig]
+opt-level = 3
+[profile.test.package.num-bigint-dig]
+opt-level = 3
 [profile.dev.package.rle-decode-fast]
 opt-level = 3
 [profile.test.package.rle-decode-fast]
