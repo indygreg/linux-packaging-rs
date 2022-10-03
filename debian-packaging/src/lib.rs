@@ -8,9 +8,6 @@ This crate defines pure Rust implementations of Debian packaging primitives. Deb
 (frequently interacted with by tools like `apt` and `apt-get`) provides the basis for
 packaging on Debian-flavored Linux distributions like Debian and Ubuntu.
 
-The canonical home of this crate is <https://github.com/indygreg/PyOxidizer>. Please file issues
-and pull requests there.
-
 # Goals
 
 ## Compliance and Compatibility

@@ -6,8 +6,8 @@ edition = "2021"
 license = "MPL-2.0"
 description = "Debian packaging primitives"
 keywords = ["debian", "package", "apt", "deb"]
-homepage = "https://github.com/indygreg/PyOxidizer"
-repository = "https://github.com/indygreg/PyOxidizer.git"
+homepage = "https://github.com/indygreg/linux-packaging-rs"
+repository = "https://github.com/indygreg/linux-packaging-rs.git"
 readme = "README.md"
 
 [dependencies]

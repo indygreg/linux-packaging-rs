@@ -13,7 +13,7 @@ Run `lpa help` for more details.
 $ cargo install linux-package-analyzer
 
 # From the latest commit in the canonical Git repository:
-$ cargo install --git https://github.com/indygreg/PyOxidizer linux-package-analyzer
+$ cargo install --git https://github.com/indygreg/linux-packaging-rs linux-package-analyzer
 
 # From the root directory of a Git source checkout:
 $ cargo install --path linux-package-analyzer
@@ -156,13 +156,3 @@ To maximize speed of import operations, SQLite databases have their content
 integrity and durability guarantees weakened via `PRAGMA` statements issued
 on database open. A process or machine crash during a write operation could
 corrupt the SQLite database more easily than it otherwise would.
-
-# Project Relationship
-
-`linux-package-analyzer` is part of the
-[PyOxidizer](https://github.com/indygreg/PyOxidizer.git) project and
-this crate is developed in that repository.
-
-While this crate is developed as part of a larger project, modifications
-to support its use outside of its primary use case are very much welcomed
-and encouraged!

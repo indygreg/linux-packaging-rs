@@ -6,8 +6,8 @@ authors = ["Gregory Szorc <gregory.szorc@gmail.com>"]
 license = "MPL-2.0"
 description = "CLI tool to analyze Linux packages"
 keywords = ["deb", "package", "rpm"]
-homepage = "https://github.com/indygreg/PyOxidizer"
-repository = "https://github.com/indygreg/PyOxidizer.git"
+homepage = "https://github.com/indygreg/linux-packaging-rs"
+repository = "https://github.com/indygreg/linux-packaging-rs.git"
 readme = "README.md"
 
 [[bin]]

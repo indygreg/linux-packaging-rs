@@ -330,7 +330,7 @@ async fn command_import_debian_repository(args: &ArgMatches) -> Result<()> {
 
 async fn command_import_rpm_repository(_: &ArgMatches) -> Result<()> {
     eprintln!("RPM functionality has been disabled because the rpm-rs crate is not maintained.");
-    eprintln!("See https://github.com/indygreg/PyOxidizer/issues/619 for more");
+    eprintln!("See https://github.com/indygreg/linux-packaging-rs/issues/1 for more");
     Err(anyhow!("functionality disabled"))
 
     /*

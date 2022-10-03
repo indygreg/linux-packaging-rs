@@ -17,8 +17,6 @@ jobs:
           - 'stable'
           - 'beta'
           - 'nightly'
-          # Remember to update MINIMUM_RUST_VERSION in pyoxidizer/src/environment.rs
-          # and the `Installing Rust` documentation when this changes.
           - '1.61.0'
         target:
           - os: 'ubuntu-20.04'
@@ -35,7 +33,7 @@ jobs:
       IN_CI: '1'
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      SCCACHE_BUCKET: 'pyoxidizer-sccache'
+      SCCACHE_BUCKET: 'linux-packaging-rs-sccache'
       SCCACHE_S3_USE_SSL: '1'
       # Prevent sccache server from stopping due to inactivity.
       SCCACHE_IDLE_TIMEOUT: '0'
