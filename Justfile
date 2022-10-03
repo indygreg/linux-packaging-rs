@@ -1,18 +1,6 @@
 default:
   cargo build
 
-exe_suffix := if os() == "windows" { ".exe" } else { "" }
-
-macosx_deployment_target := if os() == "macos" {
-  if arch() == "arm" {
-    "11.0"
-  } else {
-    "10.9"
-  }
-} else {
-  ""
-}
-
 actions-install-sccache-linux:
   python3 scripts/secure_download.py \
     https://github.com/mozilla/sccache/releases/download/v0.3.0/sccache-v0.3.0-x86_64-unknown-linux-musl.tar.gz \
@@ -42,25 +30,10 @@ actions-install-sccache-windows:
   mv sccache-v0.3.0-x86_64-pc-windows-msvc/sccache.exe C:/Users/runneradmin/.cargo/bin/sccache.exe
 
 actions-bootstrap-rust-linux: actions-install-sccache-linux
-  sudo apt install -y --no-install-recommends libpcsclite-dev musl-tools
 
 actions-bootstrap-rust-macos: actions-install-sccache-macos
 
 actions-bootstrap-rust-windows: actions-install-sccache-windows
-
-actions-macos-universal exe:
-  #!/usr/bin/env bash
-  set -eo pipefail
-
-  mkdir -p uploads
-  lipo {{exe}}-x86-64/{{exe}} {{exe}}-aarch64/{{exe}} -create -output uploads/{{exe}}
-  chmod +x uploads/{{exe}}
-  lipo uploads/{{exe}} -info
-
-  # There might be a COPYING file with licensing info. If so, preserve it.
-  if [ -e "{{exe}}-aarch64/COPYING" ]; then
-    cp -v {{exe}}-aarch64/COPYING uploads/
-  fi
 
 # Trigger a workflow on a branch.
 ci-run workflow branch="ci-test":
