@@ -143,8 +143,8 @@ pub trait RepositoryRootReader: DataResolver + Sync {
 
     /// Obtain a [ReleaseReader] for a given distribution.
     ///
-    /// This assumes the `InRelease` file is located in `dists/{distribution}/`. This is the case
-    /// for most repositories.
+    /// This assumes either an `InRelease` or `Release` file is located in `dists/{distribution}/`.
+    /// This is the case for most repositories.
     async fn release_reader(&self, distribution: &str) -> Result<Box<dyn ReleaseReader>> {
         self.release_reader_with_distribution_path(&format!(
             "dists/{}",
@@ -178,6 +178,41 @@ pub trait RepositoryRootReader: DataResolver + Sync {
         Ok(ReleaseFile::from_armored_reader(std::io::Cursor::new(
             data,
         ))?)
+    }
+
+    /// Fetch and parse an `Release` file at the relative path specified.
+    ///
+    /// `path` is typically a value like `dists/<distribution>/Release`. e.g.
+    /// `dists/bullseye/Release`.
+    ///
+    /// The default implementation of this trait should be sufficient for most types.
+    async fn fetch_release(&self, path: &str) -> Result<ReleaseFile<'static>> {
+        let mut reader = self.get_path(path).await?;
+
+        let mut data = vec![];
+        reader.read_to_end(&mut data).await?;
+
+        Ok(ReleaseFile::from_reader(std::io::Cursor::new(data))?)
+    }
+    /// Fetch and parse either an `InRelease` or `Release` file at the relative path specified.
+    ///
+    /// First attempt to use the more modern `InRelease` file, fall back to `Release`
+    ///
+    /// The default implementation of this trait should be sufficient for most types.
+    async fn fetch_inrelease_or_release(
+        &self,
+        inrelease_path: &str,
+        release_path: &str,
+    ) -> Result<ReleaseFile<'static>> {
+        match self.fetch_inrelease(inrelease_path).await {
+            Ok(release) => Ok(release),
+            Err(DebianError::RepositoryIoPath(_, e))
+                if e.kind() == std::io::ErrorKind::NotFound =>
+            {
+                self.fetch_release(release_path).await
+            }
+            Err(e) => Err(e),
+        }
     }
 
     /// Fetch a binary package given a [BinaryPackageFetch] instruction.

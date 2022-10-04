@@ -131,7 +131,8 @@ impl RepositoryRootReader for HttpRepositoryClient {
         path: &str,
     ) -> Result<Box<dyn ReleaseReader>> {
         let distribution_path = path.trim_matches('/').to_string();
-        let release_path = join_path(&distribution_path, "InRelease");
+        let inrelease_path = join_path(&distribution_path, "InRelease");
+        let release_path = join_path(&distribution_path, "Release");
         let mut root_url = self.root_url.join(&distribution_path)?;
 
         // Trailing URLs are significant to the Url type when we .join(). So ensure
@@ -140,7 +141,9 @@ impl RepositoryRootReader for HttpRepositoryClient {
             root_url.set_path(&format!("{}/", root_url.path()));
         }
 
-        let release = self.fetch_inrelease(&release_path).await?;
+        let release = self
+            .fetch_inrelease_or_release(&inrelease_path, &release_path)
+            .await?;
 
         let fetch_compression = Compression::default_preferred_order()
             .next()
