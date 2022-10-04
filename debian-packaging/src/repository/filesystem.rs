@@ -65,10 +65,13 @@ impl RepositoryRootReader for FilesystemRepositoryReader {
         path: &str,
     ) -> Result<Box<dyn ReleaseReader>> {
         let distribution_path = path.trim_matches('/').to_string();
-        let release_path = format!("{}/InRelease", distribution_path);
+        let inrelease_path = format!("{}/InRelease", distribution_path);
+        let release_path = format!("{}/Release", distribution_path);
         let distribution_dir = self.root_dir.join(&distribution_path);
 
-        let release = self.fetch_inrelease(&release_path).await?;
+        let release = self
+            .fetch_inrelease_or_release(&inrelease_path, &release_path)
+            .await?;
 
         let fetch_compression = Compression::default_preferred_order()
             .next()
