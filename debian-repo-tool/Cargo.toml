@@ -20,7 +20,7 @@ num_cpus = "1.13"
 pbr = "1.0"
 serde_yaml = "0.9"
 thiserror = "1.0"
-tokio = { version = "1.15", features = ["full"] }
+tokio = { version = "1.23", features = ["full"] }
 
 [dependencies.debian-packaging]
 version = "0.16.0-pre"
