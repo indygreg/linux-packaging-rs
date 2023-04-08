@@ -201,7 +201,7 @@ mod test {
     #[test]
     fn key_creation() -> pgp::errors::Result<()> {
         let builder = signing_secret_key_params_builder("Me <someone@example.com>");
-        let params = builder.build()?;
+        let params = builder.build().unwrap();
         let (private, public) = create_self_signed_key(params, || "passphrase".to_string())?;
 
         assert!(private
