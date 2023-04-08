@@ -6,7 +6,7 @@
 
 use {
     pgp::{
-        crypto::{HashAlgorithm, SymmetricKeyAlgorithm},
+        crypto::{hash::HashAlgorithm, sym::SymmetricKeyAlgorithm},
         types::{CompressionAlgorithm, SecretKeyTrait},
         Deserializable, KeyType, SecretKeyParams, SecretKeyParamsBuilder, SignedPublicKey,
         SignedSecretKey,

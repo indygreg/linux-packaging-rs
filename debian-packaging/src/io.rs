@@ -15,7 +15,7 @@ use {
     },
     async_trait::async_trait,
     futures::{AsyncBufRead, AsyncRead, AsyncWrite},
-    pgp::crypto::Hasher,
+    pgp::crypto::hash::Hasher,
     pgp_cleartext::CleartextHasher,
     pin_project::pin_project,
     std::{
@@ -195,7 +195,7 @@ pub async fn drain_reader(reader: impl AsyncRead) -> std::io::Result<u64> {
 /// for readers to drain this reader. e.g. by using [drain_reader()].
 #[pin_project]
 pub struct ContentValidatingReader<R> {
-    hasher: Option<Box<dyn pgp::crypto::Hasher + Send>>,
+    hasher: Option<Box<dyn pgp::crypto::hash::Hasher + Send>>,
     expected_size: u64,
     expected_digest: ContentDigest,
     #[pin]

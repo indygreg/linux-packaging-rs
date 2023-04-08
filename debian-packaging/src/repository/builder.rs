@@ -26,7 +26,7 @@ use {
     },
     chrono::{DateTime, Utc},
     futures::{AsyncRead, AsyncReadExt, StreamExt, TryStreamExt},
-    pgp::{crypto::HashAlgorithm, types::SecretKeyTrait},
+    pgp::{crypto::hash::HashAlgorithm, types::SecretKeyTrait},
     pgp_cleartext::cleartext_sign,
     std::{
         borrow::Cow,

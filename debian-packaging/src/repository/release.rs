@@ -73,7 +73,7 @@ impl ChecksumType {
     }
 
     /// Obtain a new hasher for this checksum flavor.
-    pub fn new_hasher(&self) -> Box<dyn pgp::crypto::Hasher + Send> {
+    pub fn new_hasher(&self) -> Box<dyn pgp::crypto::hash::Hasher + Send> {
         Box::new(match self {
             Self::Md5 => CleartextHasher::md5(),
             Self::Sha1 => CleartextHasher::sha1(),
