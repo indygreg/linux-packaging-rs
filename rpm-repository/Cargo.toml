@@ -16,7 +16,7 @@ futures = "0.3.28"
 hex = "0.4.3"
 pin-project = "1.0.12"
 serde = { version = "1.0.159", features = ["derive"] }
-serde-xml-rs = "0.5.1"
+serde-xml-rs = "0.6.0"
 sha-1 = "0.10.1"
 sha2 = "0.10.6"
 thiserror = "1.0.40"
