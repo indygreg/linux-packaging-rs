@@ -183,12 +183,12 @@ impl MetadataReader for HttpMetadataClient {
 mod test {
     use super::*;
 
-    const FEDORA_35_URL: &str =
-        "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/35/Server/x86_64/os";
+    const FEDORA_37_URL: &str =
+        "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/37/Server/x86_64/os";
 
     #[tokio::test]
-    async fn fedora_35() -> Result<()> {
-        let root = HttpRepositoryClient::new(FEDORA_35_URL)?;
+    async fn fedora_37() -> Result<()> {
+        let root = HttpRepositoryClient::new(FEDORA_37_URL)?;
 
         let metadata = root.metadata_reader().await?;
 
