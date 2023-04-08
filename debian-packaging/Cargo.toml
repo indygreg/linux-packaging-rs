@@ -11,64 +11,64 @@ repository = "https://github.com/indygreg/linux-packaging-rs.git"
 readme = "README.md"
 
 [dependencies]
-ar = "0.9"
-async-std = { version = "1.10", features = ["unstable"] }
-async-tar = "0.4"
-async-trait = "0.1"
-bytes = "1.1"
-chrono = "0.4"
-digest = "0.10"
-futures = "0.3"
-hex = "0.4"
-libflate = "1.0"
-mailparse = "0.14"
-md-5 = "0.10"
-once_cell = "1.8"
-os_str_bytes = "6.0"
-pin-project = "1.0"
+ar = "0.9.0"
+async-std = { version = "1.12.0", features = ["unstable"] }
+async-tar = "0.4.2"
+async-trait = "0.1.68"
+bytes = "1.4.0"
+chrono = "0.4.24"
+digest = "0.10.6"
+futures = "0.3.28"
+hex = "0.4.3"
+libflate = "1.3.0"
+mailparse = "0.14.0"
+md-5 = "0.10.5"
+once_cell = "1.17.1"
+os_str_bytes = "6.5.0"
+pin-project = "1.0.12"
 pgp = "0.9.0"
-pgp-cleartext = "0.6"
-regex = "1.5"
-serde = { version = "1.0", features = ["derive"] }
-sha-1 = "0.10"
-sha2 = "0.10"
-simple-file-manifest = "0.11"
-smallvec = "1.7"
-strum = { version = "0.24", features = ["derive"] }
-strum_macros = "0.24"
-tar = "0.4"
-thiserror = "1.0"
-tokio = { version = "1.14", features = ["macros"] }
-url = "2.2"
-xz2 = { version = "0.1", features = ["static"] }
-zstd = "0.11"
+pgp-cleartext = "0.6.0"
+regex = "1.7.3"
+serde = { version = "1.0.159", features = ["derive"] }
+sha-1 = "0.10.1"
+sha2 = "0.10.6"
+simple-file-manifest = "0.11.0"
+smallvec = "1.10.0"
+strum = { version = "0.24.1", features = ["derive"] }
+strum_macros = "0.24.3"
+tar = "0.4.38"
+thiserror = "1.0.40"
+tokio = { version = "1.27.0", features = ["macros"] }
+url = "2.3.1"
+xz2 = { version = "0.1.7", features = ["static"] }
+zstd = "0.11.2"
 
 [dependencies.async-compression]
-version = "0.3"
+version = "0.3.15"
 features = ["bzip2", "futures-io", "gzip", "lzma", "xz", "zstd"]
 
 [dependencies.reqwest]
-version = "0.11"
+version = "0.11.16"
 optional = true
 default-features = false
 features = ["rustls-tls", "stream"]
 
 [dependencies.rusoto_core]
-version = "0.48"
+version = "0.48.0"
 optional = true
 default-features = false
 features = ["rustls"]
 
 [dependencies.rusoto_s3]
-version = "0.48"
+version = "0.48.0"
 optional = true
 default-features = false
 features = ["rustls"]
 
 [dev-dependencies]
-glob = "0.3"
-indoc = "2.0"
-tempfile = "3.3"
+glob = "0.3.1"
+indoc = "2.0.1"
+tempfile = "3.5.0"
 
 [features]
 default = ["http", "s3"]
