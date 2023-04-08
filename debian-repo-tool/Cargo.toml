@@ -23,5 +23,5 @@ thiserror = "1.0.40"
 tokio = { version = "1.27.0", features = ["full"] }
 
 [dependencies.debian-packaging]
-version = "0.16.0-pre"
+version = "0.17.0-pre"
 path = "../debian-packaging"
