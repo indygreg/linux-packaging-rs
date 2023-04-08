@@ -67,7 +67,7 @@ features = ["rustls"]
 
 [dev-dependencies]
 glob = "0.3"
-indoc = "1.0"
+indoc = "2.0"
 tempfile = "3.3"
 
 [features]
