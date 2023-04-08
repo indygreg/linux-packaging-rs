@@ -300,8 +300,12 @@ impl<'a> ControlParagraph<'a> {
     /// The timezone is always normalized to UTC even if it is expressed differently in the
     /// source string.
     pub fn field_datetime_rfc5322(&self, name: &str) -> Option<Result<DateTime<Utc>>> {
-        self.field_str(name)
-            .map(|v| Ok(Utc.timestamp(mailparse::dateparse(v)?, 0)))
+        self.field_str(name).map(|v| {
+            Ok(Utc
+                .timestamp_opt(mailparse::dateparse(v)?, 0)
+                .single()
+                .ok_or_else(|| DebianError::ControlFieldTimestampParse)?)
+        })
     }
 
     /// Obtain the field with the given name as a [ControlFieldValue::Simple], if possible.

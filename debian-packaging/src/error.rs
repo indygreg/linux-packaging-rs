@@ -53,6 +53,9 @@ pub enum DebianError {
     #[error("control field {0} can not be parsed as an integer: {0:?}")]
     ControlFieldIntParse(String, std::num::ParseIntError),
 
+    #[error("failed to parse control field timestamp")]
+    ControlFieldTimestampParse,
+
     #[error("missing field {0} in Package-List entry")]
     ControlPackageListMissingField(&'static str),
 

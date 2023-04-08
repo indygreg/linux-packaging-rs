@@ -1279,8 +1279,8 @@ mod test {
             release.date().unwrap()?,
             DateTime::<Utc>::from_utc(
                 chrono::NaiveDateTime::new(
-                    chrono::NaiveDate::from_ymd(2021, 10, 9),
-                    chrono::NaiveTime::from_hms(9, 34, 56)
+                    chrono::NaiveDate::from_ymd_opt(2021, 10, 9).unwrap(),
+                    chrono::NaiveTime::from_hms_opt(9, 34, 56).unwrap()
                 ),
                 Utc
             )
