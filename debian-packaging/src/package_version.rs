@@ -219,55 +219,33 @@ fn lexical_compare(a: &str, b: &str) -> Ordering {
     // earlier than all the non-letters and so that a tilde sorts before anything, even the end of a
     // part.
 
-    // We change the order of the strings so tildes come first, followed by letters, followed
-    // by everything else.
-    let compare_char = |a: &char, b: &char| -> Ordering {
-        match (a, b) {
-            ('~', '~') => Ordering::Equal,
-            ('~', _) => Ordering::Less,
-            (_, '~') => Ordering::Greater,
-            (a, b) if a.is_ascii_alphabetic() && !b.is_ascii_alphabetic() => Ordering::Less,
-            (a, b) if !a.is_ascii_alphabetic() && b.is_ascii_alphabetic() => Ordering::Greater,
-            (_, _) => Ordering::Equal,
-        }
-    };
+    let mut a_chars = a.chars();
+    let mut b_chars = b.chars();
 
-    let mut a_chars = a.chars().collect::<Vec<_>>();
-    let mut b_chars = b.chars().collect::<Vec<_>>();
-    a_chars.sort_by(compare_char);
-    b_chars.sort_by(compare_char);
-
-    // We then compare character by character, taking our modified lexical sort into
+    // We compare character by character, taking our modified lexical sort into
     // consideration. This gets funky when string lengths are different. Normally the
     // shorter string would sort lower. But our custom lexical compare applies when comparing
     // against a missing character!
 
-    for pos in 0..std::cmp::max(a_chars.len(), b_chars.len()) {
-        let a_char = a_chars.get(pos);
-        let b_char = b_chars.get(pos);
+    loop {
+        let ord = match (a_chars.next(), b_chars.next()) {
+            (Some('~'), Some('~')) => Ordering::Equal,
+            (Some('~'), _) => Ordering::Less,
+            (Some(_), None) => Ordering::Greater,
+            (None, Some('~')) => Ordering::Greater,
+            (None, Some(_)) => Ordering::Less,
+            (Some(a), Some(b)) if a.is_ascii_alphabetic() && !b.is_ascii_alphabetic() => {
+                Ordering::Less
+            }
+            (Some(a), Some(b)) if !a.is_ascii_alphabetic() && b.is_ascii_alphabetic() => {
+                Ordering::Greater
+            }
+            (Some(a), Some(b)) => a.cmp(&b),
+            (None, None) => break,
+        };
 
-        match (a_char, b_char) {
-            (Some(a_char), None) if *a_char == '~' => {
-                return Ordering::Less;
-            }
-            (Some(_), None) => {
-                return Ordering::Greater;
-            }
-            (None, Some(b_char)) if *b_char == '~' => {
-                return Ordering::Greater;
-            }
-            (None, Some(_)) => {
-                return Ordering::Less;
-            }
-            (Some(a_char), Some(b_char)) => match compare_char(a_char, b_char) {
-                Ordering::Equal => {}
-                res => {
-                    return res;
-                }
-            },
-            (None, None) => {
-                panic!("None, None variant should never happen");
-            }
+        if ord != Ordering::Equal {
+            return ord;
         }
     }
 
@@ -424,6 +402,10 @@ mod test {
         assert_eq!(lexical_compare("", "~"), Ordering::Greater);
         assert_eq!(lexical_compare("", "a"), Ordering::Less);
         assert_eq!(lexical_compare("a", ""), Ordering::Greater);
+        assert_eq!(lexical_compare("a", "b"), Ordering::Less);
+        assert_eq!(lexical_compare("b", "a"), Ordering::Greater);
+        assert_eq!(lexical_compare("c", "db"), Ordering::Less);
+        assert_eq!(lexical_compare("b", "+a"), Ordering::Less);
 
         // 1.0~beta1~svn1245 sorts earlier than 1.0~beta1, which sorts earlier than 1.0.
     }
