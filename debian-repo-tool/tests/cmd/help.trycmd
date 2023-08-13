@@ -1,0 +1,139 @@
+```
+$ drt help
+Debian Repository Tool 0.1
+Gregory Szorc <gregory.szorc@gmail.com>
+Interface with Debian Repositories
+
+USAGE:
+    drt [OPTIONS] [SUBCOMMAND]
+
+OPTIONS:
+    -h, --help
+            Print help information
+
+        --max-parallel-io <max-parallel-io>
+            Maximum number of parallel I/O operations to perform [default: 32]
+
+    -V, --version
+            Print version information
+
+SUBCOMMANDS:
+    copy-repository    Copy a Debian repository between locations
+    help               Print this message or the help of the given subcommand(s)
+    urls               Print documentation about repository URLs
+
+```
+
+```
+$ drt help copy-repository
+drt-copy-repository 
+Copy a Debian repository.
+
+Given a source and destination repository and parameters to control what to
+copy, this command will ensure the destination repository has a complete
+copy of the content in the source repository.
+
+Repository copying works by reading the `[In]Release` file for a given
+distribution, fetching additional indices files (such as `Packages` and
+`Sources` files) to find additional content, and bulk copying all found
+files to the destination.
+
+Copying is generally smart about avoiding I/O if possible. For example,
+a file in the destination will not be written to if it already exists and
+has the appropriate content.
+
+# YAML Configuration
+
+A YAML file can be used to specify the configuration of the copy operation(s)
+to perform.
+
+The YAML file consists of 1 or more documents. Each document can have the
+following keys:
+
+source_url (required) (string)
+   The URL or path of the repository to copy from.
+
+destination_url (required) (string)
+   The URL or path of the repository to copy to.
+
+distributions (optional) (list[string])
+   Names of distributions to copy. Distributions must be located in paths
+   like `dists/<value>`.
+
+distribution_paths (optional) (list[string])
+   Paths of distributions to copy.
+
+   Use this if a distribution isn't in a directory named `dists/<value>`.
+
+only_components (optional) (list[string])
+   Names of components to copy. Common component names include `contrib` and
+   `main`.
+
+   If not specified, all advertised components are copied.
+
+binary_packages_copy (optional) (bool)
+   Whether to copy binary packages.
+
+binary_packages_only_architectures (optional) (list[string])
+   Filter of architectures of binary packages to copy.
+
+installer_binary_packages_copy (optional) (bool)
+   Whether to copy installer binary packages (udebs).
+
+installer_binary_packages_only_architectures (optional) (list[string])
+   Filter of architectures of installer binary packages to copy.
+
+sources_copy (optional) (bool)
+   Whether to copy source packages.
+
+# Partial Copying
+
+By default, a copy operation will copy all content in the specified
+distributions. However, it is possible to limit the content that is
+copied.
+
+Our definition of _copy_ preserves the repository indices (the
+cryptographically signed documents advertising the repository content).
+When performing a partial _copy_, rewriting the indices to advertise a
+different set of content would invalidate the existing cryptographic
+signature, which is not something we want to allow in _copy_ mode.
+
+If partial copying is being performed, all indices files are preserved
+without modification, therefore preserving their cryptographic signature.
+However, these indices may refer to content that doesn't exist in the
+destination. This can result in packaging clients encountering missing
+files.
+
+USAGE:
+    drt copy-repository [OPTIONS] --yaml-config <yaml-config>
+
+OPTIONS:
+    -h, --help
+            Print help information
+
+        --max-parallel-io <max-parallel-io>
+            Maximum number of parallel I/O operations to perform
+            
+            [default: 32]
+
+        --yaml-config <yaml-config>
+            Path to a YAML file defining the copy configuration
+
+```
+
+```
+$ drt help urls
+drt-urls 
+Print documentation about repository URLs
+
+USAGE:
+    drt urls [OPTIONS]
+
+OPTIONS:
+    -h, --help
+            Print help information
+
+        --max-parallel-io <max-parallel-io>
+            Maximum number of parallel I/O operations to perform [default: 32]
+
+```

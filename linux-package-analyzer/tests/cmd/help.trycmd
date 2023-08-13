@@ -1,0 +1,434 @@
+```
+$ lpa
+? 2
+Linux Package Analyzer 0.2.0-pre
+Gregory Szorc <gregory.szorc@gmail.com>
+Analyze the content of Linux packages
+
+USAGE:
+    lpa [OPTIONS] [SUBCOMMAND]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+    -V, --version              Print version information
+
+SUBCOMMANDS:
+    cpuid-features-by-package-count
+            Print CPUID features and counts of packages having instructions with them
+    elf-file-total-x86-instruction-counts
+            Print the total number of instructions in all ELF files
+    elf-files
+            Print known ELF files
+    elf-files-defining-symbol
+            Print ELF files defining a named symbol
+    elf-files-importing-symbol
+            Print ELF files importing a specified named symbol
+    elf-files-with-ifunc
+            Print ELF files that leverage IFUNC for dynamic dispatch
+    elf-section-name-counts
+            Print counts of section names in ELF files
+    help
+            Print this message or the help of the given subcommand(s)
+    import-debian-deb
+            Import a Debian .deb package given a filesystem path
+    import-debian-repository
+            Import the contents of a Debian repository
+    import-rpm-repository
+            Import the contents of an RPM repository
+    packages-with-cpuid-feature
+            Print packages having instructions with a given CPUID feature
+    packages-with-filename
+            Print packages having a file with the specified name
+    reference-x86-cpuid-features
+            Print a list of known x86 CPUID features
+    reference-x86-instructions
+            Print a list of known x86 instructions
+    reference-x86-registers
+            Print a list of known x86 registers
+    x86-instruction-counts
+            Print global counts of x86 instructions
+    x86-register-usage-counts
+            Print counts of how many x86 instructions use known registers
+
+```
+
+```
+$ lpa help
+Linux Package Analyzer 0.2.0-pre
+Gregory Szorc <gregory.szorc@gmail.com>
+# About
+
+`lpa` provides a mechanism for analyzing the contents of Linux packages.
+
+`lpa` works by importing a source of Linux packages (e.g. a Debian or RPM
+repository) and storing the indexed result in a local SQLite database. The
+SQLite database can then be queried by `lpa` (or your own code if desired)
+to answer questions about content therein.
+
+USAGE:
+    lpa [OPTIONS] [SUBCOMMAND]
+
+OPTIONS:
+        --db <db_path>
+            Path to SQLite database to use
+            
+            [default: lpa.db]
+
+    -h, --help
+            Print help information
+
+    -t, --threads <threads>
+            Number of threads to use
+            
+            [default: 32]
+
+    -V, --version
+            Print version information
+
+SUBCOMMANDS:
+    cpuid-features-by-package-count
+            Print CPUID features and counts of packages having instructions with them
+    elf-file-total-x86-instruction-counts
+            Print the total number of instructions in all ELF files
+    elf-files
+            Print known ELF files
+    elf-files-defining-symbol
+            Print ELF files defining a named symbol
+    elf-files-importing-symbol
+            Print ELF files importing a specified named symbol
+    elf-files-with-ifunc
+            Print ELF files that leverage IFUNC for dynamic dispatch
+    elf-section-name-counts
+            Print counts of section names in ELF files
+    help
+            Print this message or the help of the given subcommand(s)
+    import-debian-deb
+            Import a Debian .deb package given a filesystem path
+    import-debian-repository
+            Import the contents of a Debian repository
+    import-rpm-repository
+            Import the contents of an RPM repository
+    packages-with-cpuid-feature
+            Print packages having instructions with a given CPUID feature
+    packages-with-filename
+            Print packages having a file with the specified name
+    reference-x86-cpuid-features
+            Print a list of known x86 CPUID features
+    reference-x86-instructions
+            Print a list of known x86 instructions
+    reference-x86-registers
+            Print a list of known x86 registers
+    x86-instruction-counts
+            Print global counts of x86 instructions
+    x86-register-usage-counts
+            Print counts of how many x86 instructions use known registers
+
+```
+
+```
+$ lpa cpuid-features-by-package-count help
+? 2
+error: Found argument 'help' which wasn't expected, or isn't valid in this context
+
+USAGE:
+    lpa cpuid-features-by-package-count [OPTIONS]
+
+For more information try --help
+
+```
+
+```
+$ lpa help elf-file-total-x86-instruction-counts
+lpa-elf-file-total-x86-instruction-counts 
+Print the total number of instructions in all ELF files
+
+USAGE:
+    lpa elf-file-total-x86-instruction-counts [OPTIONS]
+
+OPTIONS:
+        --db <db_path>                 Path to SQLite database to use [default: lpa.db]
+    -h, --help                         Print help information
+        --instruction <instruction>    Name of instruction to count
+    -t, --threads <threads>            Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help elf-files
+lpa-elf-files 
+Print known ELF files
+
+USAGE:
+    lpa elf-files [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help elf-files-defining-symbol
+lpa-elf-files-defining-symbol 
+Print ELF files defining a named symbol
+
+USAGE:
+    lpa elf-files-defining-symbol [OPTIONS] <symbol>
+
+ARGS:
+    <symbol>    Name of symbol to search for
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help elf-files-importing-symbol
+lpa-elf-files-importing-symbol 
+Print ELF files importing a specified named symbol
+
+USAGE:
+    lpa elf-files-importing-symbol [OPTIONS] [symbol]
+
+ARGS:
+    <symbol>    Symbol name to match against
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help elf-files-with-ifunc
+lpa-elf-files-with-ifunc 
+Print ELF files that leverage IFUNC for dynamic dispatch
+
+USAGE:
+    lpa elf-files-with-ifunc [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help  elf-section-name-counts
+lpa-elf-section-name-counts 
+Print counts of section names in ELF files
+
+USAGE:
+    lpa elf-section-name-counts [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+```
+$ lpa help import-debian-deb
+lpa-import-debian-deb 
+Import a Debian .deb package given a filesystem path
+
+USAGE:
+    lpa import-debian-deb [OPTIONS] <path>
+
+ARGS:
+    <path>    Path to .deb file to import
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help import-debian-repository
+lpa-import-debian-repository 
+Imports the contents of a Debian repository.
+
+This command will take an HTTP hosted Debian repository, discover all its
+packages, then proceed to download and index discovered packages.
+
+The provided URL is the directory containing the `InRelease` file. Example
+values include:
+
+* http://ftp.us.debian.org/debian (Debian)
+* http://us.archive.ubuntu.com/ubuntu (Ubuntu)
+
+USAGE:
+    lpa import-debian-repository [OPTIONS] <url> <distribution>
+
+ARGS:
+    <url>
+            Base URL of Debian repository to import
+
+    <distribution>
+            Distribution to import
+
+OPTIONS:
+        --architectures <architectures>
+            Comma delimited list of architectures to fetch
+            
+            [default: amd64]
+
+        --components <components>
+            Comma delimited list of components to fetch
+            
+            [default: main]
+
+        --db <db_path>
+            Path to SQLite database to use
+            
+            [default: lpa.db]
+
+    -h, --help
+            Print help information
+
+    -t, --threads <threads>
+            Number of threads to use
+            
+            [default: 32]
+
+```
+
+```
+$ lpa help import-rpm-repository
+lpa-import-rpm-repository 
+Import the contents of an RPM repository
+
+USAGE:
+    lpa import-rpm-repository [OPTIONS] <url>
+
+ARGS:
+    <url>    Base URL of RPM repository to import
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help packages-with-cpuid-feature
+lpa-packages-with-cpuid-feature 
+Print packages having instructions with a given CPUID feature
+
+USAGE:
+    lpa packages-with-cpuid-feature [OPTIONS] <feature>...
+
+ARGS:
+    <feature>...    Name of CPUID feature to filter on
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help packages-with-filename
+lpa-packages-with-filename 
+Print packages having a file with the specified name
+
+USAGE:
+    lpa packages-with-filename [OPTIONS] <filename>
+
+ARGS:
+    <filename>    Exact name of file to match against
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help reference-x86-cpuid-features
+lpa-reference-x86-cpuid-features 
+Print a list of known x86 CPUID features
+
+USAGE:
+    lpa reference-x86-cpuid-features [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help reference-x86-instructions
+lpa-reference-x86-instructions 
+Print a list of known x86 instructions
+
+USAGE:
+    lpa reference-x86-instructions [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help reference-x86-registers
+lpa-reference-x86-registers 
+Print a list of known x86 registers
+
+USAGE:
+    lpa reference-x86-registers [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help x86-instruction-counts
+lpa-x86-instruction-counts 
+Print global counts of x86 instructions
+
+USAGE:
+    lpa x86-instruction-counts [OPTIONS]
+
+OPTIONS:
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
+
+```
+$ lpa help x86-register-usage-counts
+lpa-x86-register-usage-counts 
+Print counts of how many x86 instructions use known registers
+
+USAGE:
+    lpa x86-register-usage-counts [OPTIONS]
+
+OPTIONS:
+        --base                 Normalize to base register name
+        --db <db_path>         Path to SQLite database to use [default: lpa.db]
+    -h, --help                 Print help information
+    -t, --threads <threads>    Number of threads to use [default: 32]
+
+```
