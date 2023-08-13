@@ -3,7 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 use {
-    clap::{Arg, ArgMatches, Command},
+    clap::{value_parser, Arg, ArgAction, ArgMatches, Command},
     debian_packaging::{
         error::DebianError,
         repository::{
@@ -173,9 +173,11 @@ pub enum DrtError {
 
 pub type Result<T> = std::result::Result<T, DrtError>;
 
-pub async fn run_cli() -> Result<()> {
-    let default_threads = format!("{}", num_cpus::get());
+fn default_threads_count() -> usize {
+    num_cpus::get()
+}
 
+pub async fn run_cli() -> Result<()> {
     let app = Command::new("Debian Repository Tool")
         .version("0.1")
         .author("Gregory Szorc <gregory.szorc@gmail.com>")
@@ -185,8 +187,8 @@ pub async fn run_cli() -> Result<()> {
     let app = app.arg(
         Arg::new("max-parallel-io")
             .long("--max-parallel-io")
-            .takes_value(true)
-            .default_value(&default_threads)
+            .action(ArgAction::Set)
+            .value_parser(value_parser!(usize))
             .global(true)
             .help("Maximum number of parallel I/O operations to perform"),
     );
@@ -198,9 +200,9 @@ pub async fn run_cli() -> Result<()> {
             .arg(
                 Arg::new("yaml-config")
                     .long("--yaml-config")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .required(true)
-                    .allow_invalid_utf8(true)
+                    .value_parser(value_parser!(std::ffi::OsString))
                     .help("Path to a YAML file defining the copy configuration"),
             ),
     );
@@ -225,10 +227,13 @@ pub async fn run_cli() -> Result<()> {
 }
 
 async fn command_copy_repository(args: &ArgMatches) -> Result<()> {
-    let max_parallel_io = args.value_of_t::<usize>("max-parallel-io")?;
+    let max_parallel_io = args
+        .get_one::<usize>("max-parallel-io")
+        .copied()
+        .unwrap_or_else(default_threads_count);
 
     let yaml_path = args
-        .value_of_os("yaml-config")
+        .get_one::<std::ffi::OsString>("yaml-config")
         .expect("yaml-config argument is required");
 
     let f = std::fs::File::open(yaml_path)?;

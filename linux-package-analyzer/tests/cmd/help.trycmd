@@ -11,7 +11,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
     -V, --version              Print version information
 
 SUBCOMMANDS:
@@ -81,8 +81,6 @@ OPTIONS:
 
     -t, --threads <threads>
             Number of threads to use
-            
-            [default: 32]
 
     -V, --version
             Print version information
@@ -151,7 +149,7 @@ OPTIONS:
         --db <db_path>                 Path to SQLite database to use [default: lpa.db]
     -h, --help                         Print help information
         --instruction <instruction>    Name of instruction to count
-    -t, --threads <threads>            Number of threads to use [default: 32]
+    -t, --threads <threads>            Number of threads to use
 
 ```
 
@@ -166,7 +164,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -184,7 +182,7 @@ ARGS:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -202,7 +200,7 @@ ARGS:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -217,7 +215,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -232,7 +230,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 ```
@@ -249,7 +247,7 @@ ARGS:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -298,8 +296,6 @@ OPTIONS:
 
     -t, --threads <threads>
             Number of threads to use
-            
-            [default: 32]
 
 ```
 
@@ -317,7 +313,7 @@ ARGS:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -335,7 +331,7 @@ ARGS:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -353,7 +349,7 @@ ARGS:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -368,7 +364,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -383,7 +379,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -398,7 +394,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -413,7 +409,7 @@ USAGE:
 OPTIONS:
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```
 
@@ -429,6 +425,6 @@ OPTIONS:
         --base                 Normalize to base register name
         --db <db_path>         Path to SQLite database to use [default: lpa.db]
     -h, --help                 Print help information
-    -t, --threads <threads>    Number of threads to use [default: 32]
+    -t, --threads <threads>    Number of threads to use
 
 ```

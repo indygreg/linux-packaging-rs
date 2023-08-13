@@ -4,7 +4,7 @@
 
 use {
     anyhow::{anyhow, Result},
-    clap::{Arg, ArgMatches, Command},
+    clap::{value_parser, Arg, ArgAction, ArgMatches, Command},
     std::collections::{HashMap, HashSet},
 };
 
@@ -32,9 +32,11 @@ values include:
 * http://us.archive.ubuntu.com/ubuntu (Ubuntu)
 ";
 
-pub async fn run() -> Result<()> {
-    let default_threads = format!("{}", num_cpus::get());
+fn default_threads_count() -> usize {
+    num_cpus::get()
+}
 
+pub async fn run() -> Result<()> {
     let app = Command::new("Linux Package Analyzer")
         .version(env!("CARGO_PKG_VERSION"))
         .author("Gregory Szorc <gregory.szorc@gmail.com>")
@@ -45,8 +47,8 @@ pub async fn run() -> Result<()> {
     let app = app.arg(
         Arg::new("db_path")
             .long("--db")
+            .action(ArgAction::Set)
             .default_value("lpa.db")
-            .takes_value(true)
             .global(true)
             .help("Path to SQLite database to use"),
     );
@@ -55,8 +57,8 @@ pub async fn run() -> Result<()> {
         Arg::new("threads")
             .short('t')
             .long("threads")
-            .takes_value(true)
-            .default_value(&default_threads)
+            .action(ArgAction::Set)
+            .value_parser(value_parser!(usize))
             .global(true)
             .help("Number of threads to use"),
     );
@@ -66,6 +68,7 @@ pub async fn run() -> Result<()> {
             .about("Import a Debian .deb package given a filesystem path")
             .arg(
                 Arg::new("path")
+                    .action(ArgAction::Set)
                     .required(true)
                     .help("Path to .deb file to import"),
             ),
@@ -78,24 +81,26 @@ pub async fn run() -> Result<()> {
             .arg(
                 Arg::new("architectures")
                     .long("architectures")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .default_value("amd64")
                     .help("Comma delimited list of architectures to fetch"),
             )
             .arg(
                 Arg::new("components")
                     .long("components")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .default_value("main")
                     .help("Comma delimited list of components to fetch"),
             )
             .arg(
                 Arg::new("url")
+                    .action(ArgAction::Set)
                     .required(true)
                     .help("Base URL of Debian repository to import"),
             )
             .arg(
                 Arg::new("distribution")
+                    .action(ArgAction::Set)
                     .required(true)
                     .help("Distribution to import"),
             ),
@@ -106,6 +111,7 @@ pub async fn run() -> Result<()> {
             .about("Import the contents of an RPM repository")
             .arg(
                 Arg::new("url")
+                    .action(ArgAction::Set)
                     .required(true)
                     .help("Base URL of RPM repository to import"),
             ),
@@ -123,7 +129,7 @@ pub async fn run() -> Result<()> {
             .about("Print ELF files defining a named symbol")
             .arg(
                 Arg::new("symbol")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .required(true)
                     .help("Name of symbol to search for"),
             ),
@@ -134,7 +140,7 @@ pub async fn run() -> Result<()> {
             .about("Print ELF files importing a specified named symbol")
             .arg(
                 Arg::new("symbol")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .help("Symbol name to match against"),
             ),
     );
@@ -150,7 +156,7 @@ pub async fn run() -> Result<()> {
             .arg(
                 Arg::new("instruction")
                     .long("--instruction")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .help("Name of instruction to count"),
             ),
     );
@@ -164,6 +170,7 @@ pub async fn run() -> Result<()> {
             .about("Print packages having instructions with a given CPUID feature")
             .arg(
                 Arg::new("feature")
+                    .action(ArgAction::Append)
                     .takes_value(true)
                     .multiple_values(true)
                     .required(true)
@@ -176,7 +183,7 @@ pub async fn run() -> Result<()> {
             .about("Print packages having a file with the specified name")
             .arg(
                 Arg::new("filename")
-                    .takes_value(true)
+                    .action(ArgAction::Set)
                     .required(true)
                     .help("Exact name of file to match against"),
             ),
@@ -192,6 +199,7 @@ pub async fn run() -> Result<()> {
             .arg(
                 Arg::new("base")
                     .long("--base")
+                    .action(ArgAction::SetTrue)
                     .help("Normalize to base register name"),
             ),
     );
@@ -242,8 +250,14 @@ pub async fn run() -> Result<()> {
 }
 
 async fn command_import_debian_deb(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
-    let path = args.value_of("path").expect("path argument is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
+    let path = args
+        .get_one::<String>("path")
+        .expect("path argument is required")
+        .as_str();
 
     let mut db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -258,21 +272,31 @@ async fn command_import_debian_deb(args: &ArgMatches) -> Result<()> {
 }
 
 async fn command_import_debian_repository(args: &ArgMatches) -> Result<()> {
-    let threads = args.value_of_t::<usize>("threads")?;
-    let db_path = args.value_of("db_path").expect("database path is required");
-    let url = args.value_of("url").expect("url argument is required");
+    let threads = args
+        .get_one::<usize>("threads")
+        .copied()
+        .unwrap_or_else(default_threads_count);
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
+    let url = args
+        .get_one::<String>("url")
+        .expect("url argument is required")
+        .as_str();
     let distribution = args
-        .value_of("distribution")
-        .expect("distribution argument is required");
+        .get_one::<String>("distribution")
+        .expect("distribution argument is required")
+        .as_str();
 
     let architectures = args
-        .value_of("architectures")
+        .get_one::<String>("architectures")
         .expect("architectures argument is required")
         .split(',')
         .map(|x| x.to_string())
         .collect::<Vec<_>>();
     let components = args
-        .value_of("components")
+        .get_one::<String>("components")
         .expect("components argument is required")
         .split(',')
         .map(|x| x.to_string())
@@ -362,7 +386,10 @@ async fn command_import_rpm_repository(_: &ArgMatches) -> Result<()> {
 }
 
 fn command_elf_files(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -374,10 +401,14 @@ fn command_elf_files(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_elf_files_defining_symbol(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
     let symbol = args
-        .value_of("symbol")
-        .expect("symbol argument is required");
+        .get_one::<String>("symbol")
+        .expect("symbol argument is required")
+        .as_str();
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -389,10 +420,14 @@ fn command_elf_files_defining_symbol(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_packages_with_filename(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
     let filename = args
-        .value_of("filename")
-        .expect("filename argument is required");
+        .get_one::<String>("filename")
+        .expect("filename argument is required")
+        .as_str();
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -404,8 +439,11 @@ fn command_packages_with_filename(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_elf_file_total_x86_instruction_counts(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
-    let instruction = args.value_of("instruction");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
+    let instruction = args.get_one::<String>("instruction").map(|x| x.as_str());
 
     if let Some(instruction) = instruction {
         iced_x86::Code::values()
@@ -425,7 +463,10 @@ fn command_elf_file_total_x86_instruction_counts(args: &ArgMatches) -> Result<()
 }
 
 fn command_elf_section_name_counts(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
     let counts = db.elf_file_section_counts_global()?;
@@ -438,7 +479,10 @@ fn command_elf_section_name_counts(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_cpuid_features_by_package_count(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
     let features_by_package = db.cpuid_features_by_package()?;
@@ -473,7 +517,10 @@ fn command_cpuid_features_by_package_count(args: &ArgMatches) -> Result<()> {
 }
 
 fn elf_files_with_ifunc(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -486,10 +533,14 @@ fn elf_files_with_ifunc(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_elf_files_importing_symbol(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
     let symbol = args
-        .value_of("symbol")
-        .expect("symbol argument is required");
+        .get_one::<String>("symbol")
+        .expect("symbol argument is required")
+        .as_str();
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -501,9 +552,12 @@ fn command_elf_files_importing_symbol(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_packages_with_cpuid_feature(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
     let wanted_features = args
-        .values_of("feature")
+        .get_many::<String>("feature")
         .expect("feature argument is required")
         .map(|x| x.to_string())
         .collect::<HashSet<_>>();
@@ -526,7 +580,10 @@ fn command_packages_with_cpuid_feature(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_x86_instruction_counts(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
@@ -538,8 +595,11 @@ fn command_x86_instruction_counts(args: &ArgMatches) -> Result<()> {
 }
 
 fn command_x86_register_usage_counts(args: &ArgMatches) -> Result<()> {
-    let db_path = args.value_of("db_path").expect("database path is required");
-    let base = args.is_present("base");
+    let db_path = args
+        .get_one::<String>("db_path")
+        .expect("database path is required")
+        .as_str();
+    let base = args.contains_id("base");
 
     let db = crate::db::DatabaseConnection::new_path(db_path)?;
 
