@@ -15,7 +15,7 @@ name = "drt"
 path = "src/main.rs"
 
 [dependencies]
-clap = "~4.0.32"
+clap = "4.3.21"
 num_cpus = "1.16.0"
 pbr = "1.1.1"
 serde_yaml = "0.9.25"

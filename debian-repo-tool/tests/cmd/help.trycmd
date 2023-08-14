@@ -11,8 +11,8 @@ Commands:
 
 Options:
       --max-parallel-io <max-parallel-io>  Maximum number of parallel I/O operations to perform
-  -h, --help                               Print help information
-  -V, --version                            Print version information
+  -h, --help                               Print help
+  -V, --version                            Print version
 
 ```
 
@@ -106,7 +106,7 @@ Options:
           Path to a YAML file defining the copy configuration
 
   -h, --help
-          Print help information (use `-h` for a summary)
+          Print help (see a summary with '-h')
 
 ```
 
@@ -118,6 +118,6 @@ Usage: drt[EXE] urls [OPTIONS]
 
 Options:
       --max-parallel-io <max-parallel-io>  Maximum number of parallel I/O operations to perform
-  -h, --help                               Print help information
+  -h, --help                               Print help
 
 ```
