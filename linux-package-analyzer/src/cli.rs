@@ -46,7 +46,7 @@ pub async fn run() -> Result<()> {
 
     let app = app.arg(
         Arg::new("db_path")
-            .long("--db")
+            .long("db")
             .action(ArgAction::Set)
             .default_value("lpa.db")
             .global(true)
@@ -155,7 +155,7 @@ pub async fn run() -> Result<()> {
             .about("Print the total number of instructions in all ELF files")
             .arg(
                 Arg::new("instruction")
-                    .long("--instruction")
+                    .long("instruction")
                     .action(ArgAction::Set)
                     .help("Name of instruction to count"),
             ),
@@ -171,8 +171,6 @@ pub async fn run() -> Result<()> {
             .arg(
                 Arg::new("feature")
                     .action(ArgAction::Append)
-                    .takes_value(true)
-                    .multiple_values(true)
                     .required(true)
                     .help("Name of CPUID feature to filter on"),
             ),
@@ -198,7 +196,7 @@ pub async fn run() -> Result<()> {
             .about("Print counts of how many x86 instructions use known registers")
             .arg(
                 Arg::new("base")
-                    .long("--base")
+                    .long("base")
                     .action(ArgAction::SetTrue)
                     .help("Normalize to base register name"),
             ),

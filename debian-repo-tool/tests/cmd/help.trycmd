@@ -1,27 +1,23 @@
 ```
 $ drt help
-Debian Repository Tool 0.1
-Gregory Szorc <gregory.szorc@gmail.com>
 Interface with Debian Repositories
 
-USAGE:
-    drt [OPTIONS] [SUBCOMMAND]
+Usage: drt[EXE] [OPTIONS] [COMMAND]
 
-OPTIONS:
-    -h, --help                                 Print help information
-        --max-parallel-io <max-parallel-io>    Maximum number of parallel I/O operations to perform
-    -V, --version                              Print version information
+Commands:
+  copy-repository  Copy a Debian repository between locations
+  urls             Print documentation about repository URLs
+  help             Print this message or the help of the given subcommand(s)
 
-SUBCOMMANDS:
-    copy-repository    Copy a Debian repository between locations
-    help               Print this message or the help of the given subcommand(s)
-    urls               Print documentation about repository URLs
+Options:
+      --max-parallel-io <max-parallel-io>  Maximum number of parallel I/O operations to perform
+  -h, --help                               Print help information
+  -V, --version                            Print version information
 
 ```
 
 ```
 $ drt help copy-repository
-drt-copy-repository 
 Copy a Debian repository.
 
 Given a source and destination repository and parameters to control what to
@@ -99,31 +95,29 @@ However, these indices may refer to content that doesn't exist in the
 destination. This can result in packaging clients encountering missing
 files.
 
-USAGE:
-    drt copy-repository [OPTIONS] --yaml-config <yaml-config>
 
-OPTIONS:
-    -h, --help
-            Print help information
+Usage: drt[EXE] copy-repository [OPTIONS] --yaml-config <yaml-config>
 
-        --max-parallel-io <max-parallel-io>
-            Maximum number of parallel I/O operations to perform
+Options:
+      --max-parallel-io <max-parallel-io>
+          Maximum number of parallel I/O operations to perform
 
-        --yaml-config <yaml-config>
-            Path to a YAML file defining the copy configuration
+      --yaml-config <yaml-config>
+          Path to a YAML file defining the copy configuration
+
+  -h, --help
+          Print help information (use `-h` for a summary)
 
 ```
 
 ```
 $ drt help urls
-drt-urls 
 Print documentation about repository URLs
 
-USAGE:
-    drt urls [OPTIONS]
+Usage: drt[EXE] urls [OPTIONS]
 
-OPTIONS:
-    -h, --help                                 Print help information
-        --max-parallel-io <max-parallel-io>    Maximum number of parallel I/O operations to perform
+Options:
+      --max-parallel-io <max-parallel-io>  Maximum number of parallel I/O operations to perform
+  -h, --help                               Print help information
 
 ```

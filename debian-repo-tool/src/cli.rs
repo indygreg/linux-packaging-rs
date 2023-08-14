@@ -186,7 +186,7 @@ pub async fn run_cli() -> Result<()> {
 
     let app = app.arg(
         Arg::new("max-parallel-io")
-            .long("--max-parallel-io")
+            .long("max-parallel-io")
             .action(ArgAction::Set)
             .value_parser(value_parser!(usize))
             .global(true)
@@ -199,7 +199,7 @@ pub async fn run_cli() -> Result<()> {
             .long_about(COPY_REPOSITORY_ABOUT)
             .arg(
                 Arg::new("yaml-config")
-                    .long("--yaml-config")
+                    .long("yaml-config")
                     .action(ArgAction::Set)
                     .required(true)
                     .value_parser(value_parser!(std::ffi::OsString))
