@@ -336,6 +336,7 @@ pub fn write_deb_tar<W: Write>(writer: W, files: &FileManifest, mtime: u64) -> R
     header.set_path(Path::new("./"))?;
     header.set_mode(0o755);
     header.set_size(0);
+    header.set_entry_type(tar::EntryType::Directory);
     header.set_cksum();
     builder.append(&header, &*vec![])?;
 
@@ -345,6 +346,7 @@ pub fn write_deb_tar<W: Write>(writer: W, files: &FileManifest, mtime: u64) -> R
         set_header_path(&mut builder, &mut header, &directory, true)?;
         header.set_mode(0o755);
         header.set_size(0);
+        header.set_entry_type(tar::EntryType::Directory);
         header.set_cksum();
         builder.append(&header, &*vec![])?;
     }
