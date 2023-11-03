@@ -42,7 +42,7 @@ thiserror = "1.0.50"
 tokio = { version = "1.33.0", features = ["macros"] }
 url = "2.4.1"
 xz2 = { version = "0.1.7", features = ["static"] }
-zstd = "0.12.4"
+zstd = "0.13.0"
 
 [dependencies.async-compression]
 version = "0.4.4"
