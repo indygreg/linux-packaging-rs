@@ -1,6 +1,6 @@
 [package]
 name = "linux-package-analyzer"
-version = "0.2.0-pre"
+version = "0.1.0"
 edition = "2021"
 authors = ["Gregory Szorc <gregory.szorc@gmail.com>"]
 license = "MPL-2.0"
@@ -34,11 +34,11 @@ xz2 = { version = "0.1.7", features = ["static"] }
 zstd = "0.13.0"
 
 [dependencies.debian-packaging]
-version = "0.17.0-pre"
+version = "0.16.0"
 path = "../debian-packaging"
 
 [dependencies.rpm-repository]
-version = "0.2.0-pre"
+version = "0.1.0"
 path = "../rpm-repository"
 
 # rpm-rs seems to be unmaintained and its old dependencies are holding us back.
