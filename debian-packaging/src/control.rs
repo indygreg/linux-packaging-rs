@@ -301,10 +301,9 @@ impl<'a> ControlParagraph<'a> {
     /// source string.
     pub fn field_datetime_rfc5322(&self, name: &str) -> Option<Result<DateTime<Utc>>> {
         self.field_str(name).map(|v| {
-            Ok(Utc
-                .timestamp_opt(mailparse::dateparse(v)?, 0)
+            Utc.timestamp_opt(mailparse::dateparse(v)?, 0)
                 .single()
-                .ok_or_else(|| DebianError::ControlFieldTimestampParse)?)
+                .ok_or_else(|| DebianError::ControlFieldTimestampParse)
         })
     }
 
