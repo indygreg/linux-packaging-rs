@@ -6,6 +6,10 @@
 
 Released on ReleaseDate.
 
+## 0.17.0
+
+Released on 2023-11-03.
+
 * MSRV 1.62 -> 1.70.
 * Package version lexical comparison reworked to avoid sorting.
 * `.deb` tar archives now correctly encode directories as directory entries.
