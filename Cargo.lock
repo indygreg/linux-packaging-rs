@@ -2229,9 +2229,9 @@ dependencies = [
 
 [[package]]
 name = "pgp-cleartext"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6617acaac5eddaa1ac3fb155b2b821f348b61127eea02516697437856a3575be"
+checksum = "86380358a78b8c6420388c7e2dd5f35b883855630272d5ac275f7bc9d769976e"
 dependencies = [
  "chrono",
  "digest 0.10.7",
