@@ -687,10 +687,12 @@ pub trait ReleaseReader: DataResolver + Sync {
     /// This will attempt to find the entry for a `Contents` file given search criteria.
     fn contents_entry(
         &self,
-        component: &str,
+        component: Option<&str>,
         architecture: &str,
         is_installer: bool,
     ) -> Result<ContentsFileEntry> {
+        let component = component.map(Cow::from);
+
         let entries = self
             .contents_indices_entries()?
             .into_iter()
@@ -722,7 +724,7 @@ pub trait ReleaseReader: DataResolver + Sync {
 
     async fn resolve_contents(
         &self,
-        component: &str,
+        component: Option<&str>,
         architecture: &str,
         is_installer: bool,
     ) -> Result<ContentsFile> {

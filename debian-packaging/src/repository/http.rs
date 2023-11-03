@@ -355,7 +355,9 @@ mod test {
         let contents_entries = release.contents_indices_entries()?;
         assert_eq!(contents_entries.len(), 126);
 
-        let contents = release.resolve_contents("contrib", "all", false).await?;
+        let contents = release
+            .resolve_contents(Some("contrib"), "all", false)
+            .await?;
 
         let packages = contents
             .packages_with_path("etc/cron.d/zfs-auto-snapshot")

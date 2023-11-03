@@ -292,7 +292,7 @@ pub struct ContentsFileEntry<'a> {
     entry: ReleaseFileEntry<'a>,
 
     /// The parsed component name (from the entry's path).
-    pub component: Cow<'a, str>,
+    pub component: Option<Cow<'a, str>>,
 
     /// The parsed architecture name (from the entry's path).
     pub architecture: Cow<'a, str>,
@@ -350,12 +350,22 @@ impl<'a> TryFrom<ReleaseFileEntry<'a>> for ContentsFileEntry<'a> {
             (architecture, false)
         };
 
-        // The component is the part up until the `/Contents*` final path component.
-        let component = &entry.path[..entry.path.len() - filename.len() - 1];
+        // Release files can annotate Contents files at the root directory or
+        // in component sub-directories. If a subdirectory is present, the part
+        // up to the Contents filename is the component. Otherwise it is a global
+        // Contents file with no component annotated.
+
+        let component = if parts.len() > 1 {
+            Some(Cow::from(
+                &entry.path[..entry.path.len() - filename.len() - 1],
+            ))
+        } else {
+            None
+        };
 
         Ok(Self {
             entry,
-            component: component.into(),
+            component,
             architecture: architecture.into(),
             compression,
             is_installer,
@@ -1480,7 +1490,7 @@ mod test {
                     .unwrap(),
                     size: 738242,
                 },
-                component: "contrib".into(),
+                component: Some("contrib".into()),
                 architecture: "all".into(),
                 compression: Compression::None,
                 is_installer: false
@@ -1497,7 +1507,7 @@ mod test {
                     .unwrap(),
                     size: 57319,
                 },
-                component: "contrib".into(),
+                component: Some("contrib".into()),
                 architecture: "all".into(),
                 compression: Compression::Gzip,
                 is_installer: false
@@ -1514,7 +1524,7 @@ mod test {
                     .unwrap(),
                     size: 0,
                 },
-                component: "contrib".into(),
+                component: Some("contrib".into()),
                 architecture: "amd64".into(),
                 compression: Compression::None,
                 is_installer: true
@@ -1661,6 +1671,40 @@ mod test {
         let signing_key = bullseye_signing_key();
 
         assert!(release.signatures.unwrap().verify(&signing_key).is_err());
+
+        Ok(())
+    }
+
+    #[test]
+    fn focal_release() -> Result<()> {
+        let mut reader = std::io::Cursor::new(include_bytes!("../testdata/release-ubuntu-focal"));
+
+        let release = ReleaseFile::from_reader(&mut reader)?;
+
+        let contents = release
+            .iter_contents_indices(ChecksumType::Sha256)
+            .unwrap()
+            .collect::<Result<Vec<_>>>()?;
+
+        assert_eq!(contents.len(), 14);
+
+        assert_eq!(
+            contents[0],
+            ContentsFileEntry {
+                entry: ReleaseFileEntry {
+                    path: "Contents-riscv64",
+                    digest: ContentDigest::sha256_hex(
+                        "0f27d95c6df5c174622e8c42e2b2f1cad636af6296ae981e87a2a7d4cdd572db"
+                    )
+                    .unwrap(),
+                    size: 603064135,
+                },
+                component: None,
+                architecture: "riscv64".into(),
+                compression: Compression::None,
+                is_installer: false,
+            }
+        );
 
         Ok(())
     }
