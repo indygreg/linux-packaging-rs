@@ -1277,7 +1277,7 @@ mod test {
         assert_eq!(release.date_str(), Some("Sat, 09 Oct 2021 09:34:56 UTC"));
         assert_eq!(
             release.date().unwrap()?,
-            DateTime::<Utc>::from_utc(
+            DateTime::<Utc>::from_naive_utc_and_offset(
                 chrono::NaiveDateTime::new(
                     chrono::NaiveDate::from_ymd_opt(2021, 10, 9).unwrap(),
                     chrono::NaiveTime::from_hms_opt(9, 34, 56).unwrap()
