@@ -27,7 +27,7 @@ use {
 pub static RE_DEPENDENCY: Lazy<Regex> = Lazy::new(|| {
     // TODO <> is a legacy syntax.
     Regex::new(
-        r#"(?x)
+        r"(?x)
         # Package name is alphanumeric, terminating at whitespace, [ or (
         (?P<package>[^\s\[(]+)
         # Any number of optional spaces.
@@ -57,7 +57,7 @@ pub static RE_DEPENDENCY: Lazy<Regex> = Lazy::new(|| {
             # The architecture. May have spaces to delimit multiple values.
             (?P<arch>[^\]]+)
         \])?
-        "#,
+        ",
     )
     .unwrap()
 });
