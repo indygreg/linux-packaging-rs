@@ -1,0 +1,15 @@
+allow-branch = ["main"]
+push-remote = "origin"
+pre-release-commit-message = "workspace: perform releases"
+tag-message = "{{crate_name}}: version {{version}}"
+tag-name = "{{crate_name}}/{{version}}"
+tag = true
+enable-features = []
+enable-all-features = false
+dependent-version = "fix"
+
+pre-release-replacements = [
+    {file="CHANGELOG.md", search="Unreleased", replace="{{version}}"},
+    {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}"},
+    {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n\n## Unreleased\n\nReleased on ReleaseDate.", exactly=1},
+]
