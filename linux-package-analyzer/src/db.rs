@@ -689,7 +689,7 @@ impl DatabaseConnection {
         for (package, version, code, _) in self.x86_instruction_counts_by_package()? {
             let key = (package, version);
 
-            let entry = features_by_package.entry(key).or_insert_with(HashSet::new);
+            let entry = features_by_package.entry(key).or_default();
 
             for feature in features_by_code
                 .get(&code)
