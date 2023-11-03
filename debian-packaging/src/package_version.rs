@@ -312,31 +312,31 @@ fn compare_component(a: &str, b: &str) -> Ordering {
 
 impl PartialOrd<Self> for PackageVersion {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        // Epoch is compared numerically. Then upstream and debian components are compared
-        // using a custom algorithm. The absence of a debian revision is equivalent to `0`.
-
-        match self.epoch_assumed().cmp(&other.epoch_assumed()) {
-            Ordering::Less => Some(Ordering::Less),
-            Ordering::Greater => Some(Ordering::Greater),
-            Ordering::Equal => {
-                match compare_component(&self.upstream_version, &other.upstream_version) {
-                    Ordering::Less => Some(Ordering::Less),
-                    Ordering::Greater => Some(Ordering::Greater),
-                    Ordering::Equal => {
-                        let a = self.debian_revision.as_deref().unwrap_or("0");
-                        let b = other.debian_revision.as_deref().unwrap_or("0");
-
-                        Some(compare_component(a, b))
-                    }
-                }
-            }
-        }
+        Some(self.cmp(other))
     }
 }
 
 impl Ord for PackageVersion {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.partial_cmp(other).unwrap()
+        // Epoch is compared numerically. Then upstream and debian components are compared
+        // using a custom algorithm. The absence of a debian revision is equivalent to `0`.
+
+        match self.epoch_assumed().cmp(&other.epoch_assumed()) {
+            Ordering::Less => Ordering::Less,
+            Ordering::Greater => Ordering::Greater,
+            Ordering::Equal => {
+                match compare_component(&self.upstream_version, &other.upstream_version) {
+                    Ordering::Less => Ordering::Less,
+                    Ordering::Greater => Ordering::Greater,
+                    Ordering::Equal => {
+                        let a = self.debian_revision.as_deref().unwrap_or("0");
+                        let b = other.debian_revision.as_deref().unwrap_or("0");
+
+                        compare_component(a, b)
+                    }
+                }
+            }
+        }
     }
 }
 
