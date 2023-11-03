@@ -86,8 +86,8 @@ impl ContentDigest {
     /// Create a new hasher matching for the type of this digest.
     pub fn new_hasher(&self) -> Box<dyn digest::DynDigest + Send> {
         match self {
-            Self::Sha1(_) => Box::new(sha1::Sha1::default()),
-            Self::Sha256(_) => Box::new(sha2::Sha256::default()),
+            Self::Sha1(_) => Box::<sha1::Sha1>::default(),
+            Self::Sha256(_) => Box::<sha2::Sha256>::default(),
         }
     }
 
