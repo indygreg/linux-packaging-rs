@@ -167,7 +167,7 @@ impl RepositoryWriter for FilesystemRepositoryWriter {
 
         if metadata.is_file() {
             if let Some((expected_size, expected_digest)) = expected_content {
-                if metadata.len() != expected_size as u64 {
+                if metadata.len() != expected_size {
                     Ok(RepositoryPathVerification {
                         path,
                         state: RepositoryPathVerificationState::ExistsIntegrityMismatch,
