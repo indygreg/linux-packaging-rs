@@ -15,16 +15,16 @@ name = "drt"
 path = "src/main.rs"
 
 [dependencies]
-clap = "4.3.21"
+clap = "4.4.7"
 num_cpus = "1.16.0"
 pbr = "1.1.1"
-serde_yaml = "0.9.25"
-thiserror = "1.0.44"
-tokio = { version = "1.31.0", features = ["full"] }
+serde_yaml = "0.9.27"
+thiserror = "1.0.50"
+tokio = { version = "1.33.0", features = ["full"] }
 
 [dependencies.debian-packaging]
 version = "0.17.0-pre"
 path = "../debian-packaging"
 
 [dev-dependencies]
-trycmd = "0.14.16"
+trycmd = "0.14.19"
