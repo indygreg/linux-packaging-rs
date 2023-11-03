@@ -1290,7 +1290,7 @@ mod test {
             )
             .await?;
 
-        let wanted_paths = vec!["dists/mydist/Release", "dists/mydist/InRelease"];
+        let wanted_paths = ["dists/mydist/Release", "dists/mydist/InRelease"];
 
         assert!(wanted_paths.iter().all(|path| writer
             .paths
