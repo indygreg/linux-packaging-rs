@@ -515,7 +515,7 @@ impl<'cf> RepositoryBuilder<'cf> {
 
                 para.set_field_from_string(
                     "Description".into(),
-                    (&description[0..index]).to_string().into(),
+                    (description[0..index]).to_string().into(),
                 );
                 para.set_field_from_string("Description-md5".into(), hex::encode(digest).into());
             } else {
