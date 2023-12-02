@@ -657,15 +657,17 @@ mod test {
     use {
         super::*,
         crate::repository::{
-            http::HttpRepositoryClient,
             proxy_writer::{ProxyVerifyBehavior, ProxyWriter},
             sink_writer::SinkWriter,
         },
     };
+    #[cfg(feature = "http")]
+    use crate::repository::http::HttpRepositoryClient;
 
     const DEBIAN_URL: &str = "http://snapshot.debian.org/archive/debian/20211120T085721Z";
 
     #[tokio::test]
+    #[cfg(feature = "http")]
     async fn bullseye_copy() -> Result<()> {
         let root =
             Box::new(HttpRepositoryClient::new(DEBIAN_URL)?) as Box<dyn RepositoryRootReader>;
