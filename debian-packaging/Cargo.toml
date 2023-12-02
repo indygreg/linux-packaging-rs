@@ -40,7 +40,7 @@ strum = { version = "0.26.3", features = ["derive"] }
 strum_macros = "0.26.4"
 tar = "0.4.43"
 thiserror = "1.0.66"
-tokio = { version = "1.41.0", features = ["macros"] }
+tokio = { version = "1.41.0", default-features = false, optional = true }
 url = "2.5.2"
 xz2 = { version = "0.1.7", features = ["static"] }
 zstd = "0.13.2"
@@ -71,8 +71,9 @@ features = ["rustls"]
 glob = "0.3.1"
 indoc = "2.0.5"
 tempfile = "3.13.0"
+tokio = { version = "1.41.0", features = ["macros", "rt"] }
 
 [features]
 default = ["http", "s3"]
 http = ["reqwest"]
-s3 = ["rusoto_core", "rusoto_s3"]
+s3 = ["dep:rusoto_core", "dep:rusoto_s3", "dep:tokio"]

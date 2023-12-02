@@ -8,6 +8,7 @@ Released on ReleaseDate.
 
 * Fixed compile error when building without the `http` feature.
 * MSRV 1.70 -> 1.75.
+* `tokio` is now an optional dependency and is dependent on the `http` feature.
 * `async-std` 1.12 -> 1.13.
 * `async-tar` 0.4 -> 0.5.
 * `bytes` 1.5 -> 1.8.
