@@ -766,8 +766,19 @@ impl<'txn> DatabaseTransaction<'txn> {
 
             if let Some(bi) = &pf.binary_info {
                 if let Some(elf) = &bi.elf {
-                    self.add_elf_file(package_file_id, elf)
-                        .with_context(|| format!("adding ELF file {}", pf.path.display()))?;
+                    if elf.entry_address > i64::MAX as u64 {
+                        // Cannot insert entry into SQLite since INTEGER is signed 8 bytes.
+                        // So filter out.
+                        eprintln!(
+                            "{}={} {} has entry address > 2^63; skipping ELF data",
+                            package.name,
+                            package.version,
+                            pf.path.display()
+                        );
+                    } else {
+                        self.add_elf_file(package_file_id, elf)
+                            .with_context(|| format!("adding ELF file {}", pf.path.display()))?;
+                    }
                 }
             }
         }
