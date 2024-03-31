@@ -397,7 +397,12 @@ async fn process_rpm_package(
 /// Perform SQLite operations to store metadata for an indexed package.
 fn store_indexed_package(db: &mut DatabaseConnection, package: IndexedPackage) -> Result<()> {
     db.with_transaction(|txn| {
-        txn.store_indexed_package(&package)?;
+        txn.store_indexed_package(&package).with_context(|| {
+            format!(
+                "storing package {}={}; {}",
+                package.name, package.version, package.url
+            )
+        })?;
         txn.commit()?;
 
         Ok(())

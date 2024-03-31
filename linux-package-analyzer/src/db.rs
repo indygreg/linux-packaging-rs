@@ -752,17 +752,22 @@ impl<'txn> DatabaseTransaction<'txn> {
     pub fn store_indexed_package(&self, package: &IndexedPackage) -> Result<i64> {
         let package_id = self
             .add_or_replace_package(&package.name, &package.version, &package.url)
-            .context("adding or replacing package")?;
+            .with_context(|| {
+                format!(
+                    "adding or replacing package {}={}; {}",
+                    package.name, package.version, package.url
+                )
+            })?;
 
         for pf in &package.files {
             let package_file_id = self
                 .add_package_file(package_id, &pf.path, pf.size)
-                .context("adding package file")?;
+                .with_context(|| format!("adding package file {}", pf.path.display()))?;
 
             if let Some(bi) = &pf.binary_info {
                 if let Some(elf) = &bi.elf {
                     self.add_elf_file(package_file_id, elf)
-                        .context("adding ELF file")?;
+                        .with_context(|| format!("adding ELF file {}", pf.path.display()))?;
                 }
             }
         }
@@ -814,33 +819,35 @@ impl<'txn> DatabaseTransaction<'txn> {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         "})?;
 
-        statement.execute(params![
-            package_file_id,
-            elf.class,
-            elf.data_encoding,
-            elf.os_abi,
-            elf.abi_version,
-            elf.object_file_type,
-            elf.machine,
-            elf.entry_address,
-            elf.elf_flags,
-            elf.program_header_size,
-            elf.program_header_len,
-            elf.section_header_size,
-            elf.section_header_len,
-            elf.plt_relocs_size,
-            elf.rel_relocs_size,
-            elf.rela_relocs_size,
-            elf.string_table_size,
-            elf.init_function_address,
-            elf.termination_function_address,
-            elf.shared_object_name,
-            elf.flags,
-            elf.flags1,
-            elf.runpath,
-            elf.relocations_count,
-            elf.relocations_a_count,
-        ])?;
+        statement
+            .execute(params![
+                package_file_id,
+                elf.class,
+                elf.data_encoding,
+                elf.os_abi,
+                elf.abi_version,
+                elf.object_file_type,
+                elf.machine,
+                elf.entry_address,
+                elf.elf_flags,
+                elf.program_header_size,
+                elf.program_header_len,
+                elf.section_header_size,
+                elf.section_header_len,
+                elf.plt_relocs_size,
+                elf.rel_relocs_size,
+                elf.rela_relocs_size,
+                elf.string_table_size,
+                elf.init_function_address,
+                elf.termination_function_address,
+                elf.shared_object_name,
+                elf.flags,
+                elf.flags1,
+                elf.runpath,
+                elf.relocations_count,
+                elf.relocations_a_count,
+            ])
+            .context("inserting into elf_file")?;
 
         let elf_id = self.txn.last_insert_rowid();
 
