@@ -12,7 +12,6 @@ pub enum DebianError {
     #[error("file manifest error: {0}")]
     FileManifestError(#[from] FileManifestError),
 
-    #[cfg(feature = "http")]
     #[error("URL error: {0:?}")]
     Url(#[from] url::ParseError),
 
