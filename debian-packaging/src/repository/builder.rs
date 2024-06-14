@@ -1131,13 +1131,15 @@ async fn get_path_and_copy<'a, 'b>(
 
 #[cfg(test)]
 mod test {
+    #[cfg(feature = "http")]
+    use crate::repository::http::HttpRepositoryClient;
     use {
         super::*,
         crate::{
             io::PathMappingDataResolver,
             repository::{
-                http::HttpRepositoryClient, RepositoryPathVerification,
-                RepositoryPathVerificationState, RepositoryRootReader, RepositoryWrite,
+                RepositoryPathVerification, RepositoryPathVerificationState, RepositoryRootReader,
+                RepositoryWrite,
             },
             signing_key::{create_self_signed_key, signing_secret_key_params_builder},
         },
@@ -1210,6 +1212,7 @@ mod test {
     }
 
     #[tokio::test]
+    #[cfg(feature = "http")]
     async fn bullseye_binary_packages_reader() -> Result<()> {
         let root = HttpRepositoryClient::new(BULLSEYE_URL).unwrap();
         let release = root.release_reader("bullseye").await.unwrap();
