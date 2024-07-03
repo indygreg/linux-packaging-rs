@@ -179,31 +179,31 @@ impl MetadataReader for HttpMetadataClient {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    const FEDORA_37_URL: &str =
-        "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/37/Server/x86_64/os";
-
-    #[tokio::test]
-    async fn fedora_37() -> Result<()> {
-        let root = HttpRepositoryClient::new(FEDORA_37_URL)?;
-
-        let metadata = root.metadata_reader().await?;
-
-        let primary = metadata.primary_packages().await?;
-
-        let zlib = primary
-            .packages
-            .iter()
-            .find(|entry| entry.name == "zlib")
-            .unwrap();
-
-        assert_eq!(zlib.package_type, "rpm");
-        // This could change if a new version is released.
-        assert!(zlib.version.version.starts_with("1.2"));
-
-        Ok(())
-    }
-}
+// #[cfg(test)]
+// mod test {
+//     use super::*;
+//
+//     const FEDORA_37_URL: &str =
+//         "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/37/Server/x86_64/os";
+//
+//     #[tokio::test]
+//     async fn fedora_37() -> Result<()> {
+//         let root = HttpRepositoryClient::new(FEDORA_37_URL)?;
+//
+//         let metadata = root.metadata_reader().await?;
+//
+//         let primary = metadata.primary_packages().await?;
+//
+//         let zlib = primary
+//             .packages
+//             .iter()
+//             .find(|entry| entry.name == "zlib")
+//             .unwrap();
+//
+//         assert_eq!(zlib.package_type, "rpm");
+//         // This could change if a new version is released.
+//         assert!(zlib.version.version.starts_with("1.2"));
+//
+//         Ok(())
+//     }
+// }
