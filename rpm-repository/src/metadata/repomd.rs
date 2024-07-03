@@ -10,10 +10,7 @@ use {
         io::ContentDigest,
     },
     serde::{Deserialize, Serialize},
-    serde::{Deserializer, Serializer},
-    serde::de::{Error, Visitor},
     std::io::Read,
-    std::fmt::Formatter,
 };
 
 /// A `repomd.xml` file.
@@ -52,7 +49,7 @@ pub struct RepoMdData {
     /// Size in bytes of the file as stored in the repository.
     pub size: Option<u64>,
     /// Time file was created/modified.
-    pub timestamp: Option<Timestamp>,
+    pub timestamp: Option<f64>,
     /// Content checksum of the decoded (often decompressed) file.
     #[serde(rename = "open-checksum")]
     pub open_checksum: Option<Checksum>,
@@ -96,47 +93,6 @@ pub struct Location {
     pub href: String,
 }
 
-struct TimestampVisitor;
-
-impl<'de> Visitor<'de> for TimestampVisitor {
-    type Value = u64;
-
-    fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
-        formatter.write_str("a positive number")
-    }
-
-    fn visit_u64<E>(self, v: u64) -> std::result::Result<Self::Value, E> where E: Error {
-        // Keep the same value
-        Ok(v)
-    }
-
-    fn visit_f64<E>(self, v: f64) -> std::result::Result<Self::Value, E> where E: Error {
-        use std::u64;
-        // Round to the nearest `u64`
-        if v < u64::MIN as f64 || v > u64::MAX as f64{
-            return Err(E::custom(format!("Invalid timestamp: {}", v)))
-        }
-        Ok(v.round() as u64)
-    }
-}
-
-/// Time file was created/modified.
-#[derive(Clone, Debug, PartialEq)]
-pub struct Timestamp(u64);
-
-impl Serialize for Timestamp {
-    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error> where S: Serializer {
-        serializer.serialize_u64(self.0)
-    }
-}
-
-impl<'de> Deserialize<'de> for Timestamp {
-    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error> where D: Deserializer<'de> {
-        Ok(Self(deserializer.deserialize_f64(TimestampVisitor)?))
-    }
-}
-
-
 #[cfg(test)]
 mod test {
     use super::*;
@@ -147,7 +103,7 @@ mod test {
     #[test]
     fn fedora_35_parse() -> Result<()> {
         let result = RepoMd::from_xml(FEDORA_35_REPOMD_XML)?;
-        assert_eq!(result.data[0].timestamp, Some(Timestamp(1635225121)));
+        assert_eq!(result.data[0].timestamp, Some(1635225121.));
 
         Ok(())
     }
@@ -155,7 +111,7 @@ mod test {
     #[test]
     fn with_float_timestamp_parse() -> Result<()> {
         let result = RepoMd::from_xml(WITH_FLOAT_TIMESTAMP)?;
-        assert_eq!(result.data[0].timestamp, Some(Timestamp(1635225122)));
+        assert_eq!(result.data[0].timestamp, Some(1635225121.75));
 
         Ok(())
     }
