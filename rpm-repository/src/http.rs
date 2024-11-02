@@ -183,12 +183,12 @@ impl MetadataReader for HttpMetadataClient {
 mod test {
     use super::*;
 
-    const FEDORA_37_URL: &str =
-        "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/37/Server/x86_64/os";
+    const FEDORA_41_URL: &str =
+        "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/os";
 
     #[tokio::test]
-    async fn fedora_37() -> Result<()> {
-        let root = HttpRepositoryClient::new(FEDORA_37_URL)?;
+    async fn fedora_41() -> Result<()> {
+        let root = HttpRepositoryClient::new(FEDORA_41_URL)?;
 
         let metadata = root.metadata_reader().await?;
 
@@ -197,12 +197,12 @@ mod test {
         let zlib = primary
             .packages
             .iter()
-            .find(|entry| entry.name == "zlib")
+            .find(|entry| entry.name == "zstd")
             .unwrap();
 
         assert_eq!(zlib.package_type, "rpm");
         // This could change if a new version is released.
-        assert!(zlib.version.version.starts_with("1.2"));
+        assert!(zlib.version.version.starts_with("1.5"));
 
         Ok(())
     }
