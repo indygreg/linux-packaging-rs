@@ -19,6 +19,7 @@ use {
     std::{
         borrow::Cow,
         collections::HashMap,
+        fmt::Display,
         io::{BufRead, Write},
         str::FromStr,
     },
@@ -187,9 +188,9 @@ impl<'a> ControlField<'a> {
     }
 }
 
-impl<'a> ToString for ControlField<'a> {
-    fn to_string(&self) -> String {
-        format!("{}: {}\n", self.name, self.value_str())
+impl<'a> Display for ControlField<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", format!("{}: {}\n", self.name, self.value_str()))
     }
 }
 
@@ -370,15 +371,15 @@ impl<'a> ControlParagraph<'a> {
     }
 }
 
-impl<'a> ToString for ControlParagraph<'a> {
-    fn to_string(&self) -> String {
+impl<'a> Display for ControlParagraph<'a> {
+    fn fmt(&self, f1: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let fields = self
             .fields
             .iter()
             .map(|f| f.to_string())
             .collect::<Vec<_>>();
 
-        fields.join("")
+        write!(f1, "{}", fields.join(""))
     }
 }
 
