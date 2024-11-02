@@ -16,6 +16,8 @@ Released on ReleaseDate.
 * `os_str_bytes` 6.6 -> 7.0.
 * `regex` 1.10 -> 1.11.
 * `smallvec` 1.11 -> 1.13.
+* `strum` 0.25 -> 0.26.
+* `strum_macros` 0.25 -> 0.26.
 * `tokio` 1.33 -> 1.41.
 * `url` 2.4 -> 2.5.
 * `tempfile` 3.8 -> 3.13.
