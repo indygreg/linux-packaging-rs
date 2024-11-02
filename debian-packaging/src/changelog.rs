@@ -105,7 +105,9 @@ mod tests {
             maintainer_name: "maintainer".into(),
             maintainer_email: "me@example.com".into(),
             date: DateTime::from_naive_utc_and_offset(
-                chrono::NaiveDateTime::from_timestamp_opt(1420000000, 0).unwrap(),
+                chrono::DateTime::from_timestamp(1420000000, 0)
+                    .unwrap()
+                    .naive_utc(),
                 chrono::TimeZone::from_offset(&chrono::FixedOffset::west_opt(3600 * 7).unwrap()),
             ),
         });
