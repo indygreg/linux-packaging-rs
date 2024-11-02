@@ -124,7 +124,6 @@ pub fn signing_secret_key_params_builder(primary_user_id: impl ToString) -> Secr
             HashAlgorithm::SHA2_512
         ])
         .preferred_compression_algorithms(smallvec![CompressionAlgorithm::ZLIB])
-        .can_create_certificates(false)
         .can_sign(true)
         .primary_user_id(primary_user_id.to_string());
 
@@ -167,9 +166,9 @@ pub fn signing_secret_key_params_builder(primary_user_id: impl ToString) -> Secr
 /// // is a common way to store and exchange PGP key pairs.
 ///
 /// // Produces `-----BEGIN PGP PRIVATE KEY BLOCK----- ...`
-/// let private_key_armored = private_key.to_armored_string(None).unwrap();
+/// let private_key_armored = private_key.to_armored_string(Default::default()).unwrap();
 /// // Produces `-----BEGIN PGP PUBLIC KEY BLOCK----- ...`
-/// let public_key_armored = public_key.to_armored_string(None).unwrap();
+/// let public_key_armored = public_key.to_armored_string(Default::default()).unwrap();
 /// ```
 pub fn create_self_signed_key<PW>(
     params: SecretKeyParams,
@@ -178,11 +177,12 @@ pub fn create_self_signed_key<PW>(
 where
     PW: (FnOnce() -> String) + Clone,
 {
-    let secret_key = params.generate()?;
-    let secret_key_signed = secret_key.sign(key_passphrase.clone())?;
+    let mut rng = rand::thread_rng();
+    let secret_key = params.generate(&mut rng)?;
+    let secret_key_signed = secret_key.sign(&mut rng, key_passphrase.clone())?;
 
     let public_key = secret_key_signed.public_key();
-    let public_key_signed = public_key.sign(&secret_key_signed, key_passphrase)?;
+    let public_key_signed = public_key.sign(&mut rng, &secret_key_signed, key_passphrase)?;
 
     Ok((secret_key_signed, public_key_signed))
 }
@@ -205,10 +205,10 @@ mod test {
         let (private, public) = create_self_signed_key(params, || "passphrase".to_string())?;
 
         assert!(private
-            .to_armored_string(None)?
+            .to_armored_string(Default::default())?
             .starts_with("-----BEGIN PGP PRIVATE KEY BLOCK-----"));
         assert!(public
-            .to_armored_string(None)?
+            .to_armored_string(Default::default())?
             .starts_with("-----BEGIN PGP PUBLIC KEY BLOCK-----"));
 
         Ok(())

@@ -14,6 +14,7 @@ Released on ReleaseDate.
 * `mailparse` 0.14 -> 0.15.
 * `once_cell` 1.18 -> 1.20.
 * `os_str_bytes` 6.6 -> 7.0.
+* `pgp` 0.10 -> 0.14.
 * `regex` 1.10 -> 1.11.
 * `reqwest` 0.11 -> 0.12.
 * `smallvec` 1.11 -> 1.13.
