@@ -3,7 +3,7 @@ name = "debian-packaging"
 version = "0.17.0"
 authors = ["Gregory Szorc <gregory.szorc@gmail.com>"]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.75"
 license = "MPL-2.0"
 description = "Debian packaging primitives"
 keywords = ["debian", "package", "apt", "deb"]
@@ -25,7 +25,7 @@ libflate = "2.0.0"
 mailparse = "0.14.0"
 md-5 = "0.10.6"
 once_cell = "1.18.0"
-os_str_bytes = {  version = "6.6.1", features = ["conversions"] }
+os_str_bytes = { version = "6.6.1", features = ["conversions"] }
 pin-project = "1.1.3"
 pgp = "0.10.2"
 pgp-cleartext = "0.10.0"
