@@ -49,6 +49,7 @@ jobs:
           RUSTC_WRAPPER: sccache
         run: |
           rustc --version
+          cargo build --workspace --no-default-features
           cargo build --workspace
           cargo nextest run --no-run --workspace
 
