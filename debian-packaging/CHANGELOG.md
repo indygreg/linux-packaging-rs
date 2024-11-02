@@ -7,6 +7,15 @@
 Released on ReleaseDate.
 
 * MSRV 1.70 -> 1.75.
+* `async-std` 1.12 -> 1.13.
+* `bytes` 1.5 -> 1.8.
+* `libflate` 2.0 -> 2.1.
+* `once_cell` 1.18 -> 1.20.
+* `regex` 1.10 -> 1.11.
+* `smallvec` 1.11 -> 1.13.
+* `tokio` 1.33 -> 1.41.
+* `url` 2.4 -> 2.5.
+* `tempfile` 3.8 -> 3.13.
 
 ## 0.17.0
 
