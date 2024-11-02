@@ -9,6 +9,7 @@ use {
     object::{
         elf,
         read::elf::{Dyn, FileHeader as ElfFileHeader, SectionHeader, Sym},
+        read::SymbolIndex,
         Architecture, BinaryFormat, Endianness, FileKind, Object, ObjectKind, SectionIndex,
     },
     once_cell::sync::Lazy,
@@ -349,7 +350,8 @@ pub fn analyze_elf<Elf: ElfFileHeader<Endian = Endianness>>(
                 let (version_file, version_version) =
                     if section.sh_type(endian) == elf::SHT_DYNSYM {
                         if let Some(versions) = &versions {
-                            let version_index = versions.version_index(endian, symbol_index);
+                            let version_index =
+                                versions.version_index(endian, SymbolIndex(symbol_index));
 
                             if let Some(version) = versions.version(version_index)? {
                                 // If the symbol is undefined, we should find an entry in verneed. That
