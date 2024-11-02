@@ -6,6 +6,10 @@
 
 Released on ReleaseDate.
 
+## 0.18.0
+
+Released on 2024-11-02.
+
 * Fixed compile error when building without the `http` feature.
 * MSRV 1.70 -> 1.75.
 * `tokio` is now an optional dependency and is dependent on the `http` feature.
