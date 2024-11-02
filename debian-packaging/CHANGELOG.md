@@ -11,6 +11,7 @@ Released on ReleaseDate.
 * `async-tar` 0.4 -> 0.5.
 * `bytes` 1.5 -> 1.8.
 * `libflate` 2.0 -> 2.1.
+* `mailparse` 0.14 -> 0.15.
 * `once_cell` 1.18 -> 1.20.
 * `regex` 1.10 -> 1.11.
 * `smallvec` 1.11 -> 1.13.
