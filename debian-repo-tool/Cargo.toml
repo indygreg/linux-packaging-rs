@@ -28,4 +28,4 @@ version = "0.17.0"
 path = "../debian-packaging"
 
 [dev-dependencies]
-trycmd = "0.14.21"
+trycmd = "0.15.8"
