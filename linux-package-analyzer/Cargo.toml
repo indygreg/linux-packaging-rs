@@ -18,7 +18,7 @@ path = "src/main.rs"
 [dependencies]
 anyhow = "1.0.92"
 clap = "4.5.20"
-cpio = "0.2.2"
+cpio = "0.4.0"
 futures = "0.3.31"
 futures-util = "0.3.31"
 iced-x86 = "1.21.0"
