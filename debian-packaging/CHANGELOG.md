@@ -15,6 +15,7 @@ Released on ReleaseDate.
 * `once_cell` 1.18 -> 1.20.
 * `os_str_bytes` 6.6 -> 7.0.
 * `regex` 1.10 -> 1.11.
+* `reqwest` 0.11 -> 0.12.
 * `smallvec` 1.11 -> 1.13.
 * `strum` 0.25 -> 0.26.
 * `strum_macros` 0.25 -> 0.26.
