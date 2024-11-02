@@ -8,6 +8,7 @@ Released on ReleaseDate.
 
 * MSRV 1.70 -> 1.75.
 * `async-std` 1.12 -> 1.13.
+* `async-tar` 0.4 -> 0.5.
 * `bytes` 1.5 -> 1.8.
 * `libflate` 2.0 -> 2.1.
 * `once_cell` 1.18 -> 1.20.
