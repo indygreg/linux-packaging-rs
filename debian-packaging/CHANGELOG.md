@@ -13,6 +13,7 @@ Released on ReleaseDate.
 * `libflate` 2.0 -> 2.1.
 * `mailparse` 0.14 -> 0.15.
 * `once_cell` 1.18 -> 1.20.
+* `os_str_bytes` 6.6 -> 7.0.
 * `regex` 1.10 -> 1.11.
 * `smallvec` 1.11 -> 1.13.
 * `tokio` 1.33 -> 1.41.
