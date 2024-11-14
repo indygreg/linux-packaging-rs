@@ -1,9 +1,9 @@
 [package]
 name = "debian-packaging"
-version = "0.17.0"
+version = "0.18.0"
 authors = ["Gregory Szorc <gregory.szorc@gmail.com>"]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.75"
 license = "MPL-2.0"
 description = "Debian packaging primitives"
 keywords = ["debian", "package", "apt", "deb"]
@@ -13,43 +13,44 @@ readme = "README.md"
 
 [dependencies]
 ar = "0.9.0"
-async-std = { version = "1.12.0", features = ["unstable"] }
-async-tar = "0.4.2"
-async-trait = "0.1.74"
-bytes = "1.5.0"
-chrono = "0.4.31"
+async-std = { version = "1.13.0", features = ["unstable"] }
+async-tar = "0.5.0"
+async-trait = "0.1.83"
+bytes = "1.8.0"
+chrono = "0.4.38"
 digest = "0.10.7"
-futures = "0.3.29"
+futures = "0.3.31"
 hex = "0.4.3"
-libflate = "2.0.0"
-mailparse = "0.14.0"
+libflate = "2.1.0"
+mailparse = "0.15.0"
 md-5 = "0.10.6"
 once_cell = "1.18.0"
-os_str_bytes = {  version = "6.6.1", features = ["conversions"] }
+os_str_bytes = { version = "7.0.0", features = ["conversions"] }
 pin-project = "1.1.3"
-pgp = "0.10.2"
-pgp-cleartext = "0.10.0"
-regex = "1.10.2"
-serde = { version = "1.0.190", features = ["derive"] }
+pgp = "0.14.0"
+pgp-cleartext = "0.11.0"
+rand = "0.8.5"
+regex = "1.11.1"
+serde = { version = "1.0.214", features = ["derive"] }
 sha-1 = "0.10.1"
 sha2 = "0.10.8"
 simple-file-manifest = "0.11.0"
-smallvec = "1.11.1"
-strum = { version = "0.25.0", features = ["derive"] }
-strum_macros = "0.25.3"
-tar = "0.4.40"
-thiserror = "1.0.50"
-tokio = { version = "1.33.0", features = ["macros"] }
-url = "2.4.1"
+smallvec = "1.13.2"
+strum = { version = "0.26.3", features = ["derive"] }
+strum_macros = "0.26.4"
+tar = "0.4.43"
+thiserror = "1.0.66"
+tokio = { version = "1.41.0", default-features = false, optional = true }
+url = "2.5.2"
 xz2 = { version = "0.1.7", features = ["static"] }
-zstd = "0.13.0"
+zstd = "0.13.2"
 
 [dependencies.async-compression]
-version = "0.4.4"
+version = "0.4.17"
 features = ["bzip2", "futures-io", "gzip", "lzma", "xz", "zstd"]
 
 [dependencies.reqwest]
-version = "0.11.22"
+version = "0.12.9"
 optional = true
 default-features = false
 features = ["rustls-tls", "stream"]
@@ -68,10 +69,11 @@ features = ["rustls"]
 
 [dev-dependencies]
 glob = "0.3.1"
-indoc = "2.0.4"
-tempfile = "3.8.1"
+indoc = "2.0.5"
+tempfile = "3.13.0"
+tokio = { version = "1.41.0", features = ["macros", "rt"] }
 
 [features]
 default = ["http", "s3"]
 http = ["reqwest"]
-s3 = ["rusoto_core", "rusoto_s3"]
+s3 = ["dep:rusoto_core", "dep:rusoto_s3", "dep:tokio"]
