@@ -6,6 +6,7 @@
 
 Released on ReleaseDate.
 
+* `Send` added to various traits that were previously just `Read`.
 * MSRV 1.75 -> 1.88.
 * Migrated from `xz2` crate to `liblzma` (#29)
 
