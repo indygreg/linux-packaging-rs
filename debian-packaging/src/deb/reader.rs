@@ -16,7 +16,10 @@ use {
     },
 };
 
-fn reader_from_filename(extension: &str, data: std::io::Cursor<Vec<u8>>) -> Result<Box<dyn Read>> {
+fn reader_from_filename(
+    extension: &str,
+    data: std::io::Cursor<Vec<u8>>,
+) -> Result<Box<dyn Read + Send>> {
     match extension {
         "" => Ok(Box::new(data)),
         ".gz" => Ok(Box::new(libflate::gzip::Decoder::new(data)?)),
@@ -29,7 +32,7 @@ fn reader_from_filename(extension: &str, data: std::io::Cursor<Vec<u8>>) -> Resu
 fn reader_from_filename_async(
     extension: &str,
     data: futures::io::Cursor<Vec<u8>>,
-) -> Result<Box<dyn futures::AsyncRead + Unpin>> {
+) -> Result<Box<dyn futures::AsyncRead + Unpin + Send>> {
     match extension {
         "" => Ok(Box::new(data)),
         ".gz" => Ok(Box::new(
@@ -52,11 +55,11 @@ fn reader_from_filename_async(
 /// 1. `debian-binary` holding the version of the binary package format.
 /// 2. `control.tar` holding package metadata.
 /// 3. `data.tar[.<ext>]` holding file content.
-pub struct BinaryPackageReader<R: Read> {
+pub struct BinaryPackageReader<R: Read + Send> {
     archive: ar::Archive<R>,
 }
 
-impl<R: Read> BinaryPackageReader<R> {
+impl<R: Read + Send> BinaryPackageReader<R> {
     /// Construct a new instance from a reader.
     pub fn new(reader: R) -> Result<Self> {
         Ok(Self {
@@ -127,11 +130,11 @@ pub enum BinaryPackageEntry {
 
 /// A reader for `control.tar` files.
 pub struct ControlTarReader {
-    archive: tar::Archive<Box<dyn Read>>,
+    archive: tar::Archive<Box<dyn Read + Send>>,
 }
 
 impl Deref for ControlTarReader {
-    type Target = tar::Archive<Box<dyn Read>>;
+    type Target = tar::Archive<Box<dyn Read + Send>>;
 
     fn deref(&self) -> &Self::Target {
         &self.archive
@@ -162,7 +165,7 @@ impl ControlTarReader {
 /// Ideally this type wouldn't exist. It is a glorified wrapper around
 /// [tar::Entries] that is needed to placate the borrow checker.
 pub struct ControlTarEntries<'a> {
-    entries: tar::Entries<'a, Box<dyn Read>>,
+    entries: tar::Entries<'a, Box<dyn Read + Send>>,
 }
 
 impl<'a> Iterator for ControlTarEntries<'a> {
@@ -182,11 +185,11 @@ impl<'a> Iterator for ControlTarEntries<'a> {
 /// Facilitates access to the raw [tar::Entry] as well as for obtaining a higher
 /// level type that decodes known files within `control.tar` files.
 pub struct ControlTarEntry<'a> {
-    inner: tar::Entry<'a, Box<dyn Read>>,
+    inner: tar::Entry<'a, Box<dyn Read + Send>>,
 }
 
 impl<'a> Deref for ControlTarEntry<'a> {
-    type Target = tar::Entry<'a, Box<dyn Read>>;
+    type Target = tar::Entry<'a, Box<dyn Read + Send>>;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
@@ -270,11 +273,11 @@ pub enum ControlTarFile {
 
 /// A reader for `data.tar` files.
 pub struct DataTarReader {
-    archive: async_tar::Archive<Box<dyn futures::io::AsyncRead + Unpin>>,
+    archive: async_tar::Archive<Box<dyn futures::io::AsyncRead + Unpin + Send>>,
 }
 
 impl Deref for DataTarReader {
-    type Target = async_tar::Archive<Box<dyn futures::io::AsyncRead + Unpin>>;
+    type Target = async_tar::Archive<Box<dyn futures::io::AsyncRead + Unpin + Send>>;
 
     fn deref(&self) -> &Self::Target {
         &self.archive
@@ -289,13 +292,13 @@ impl DerefMut for DataTarReader {
 
 impl DataTarReader {
     /// Obtain the inner [async_tar::Archive] to which this instance is bound.
-    pub fn into_inner(self) -> async_tar::Archive<Box<dyn futures::io::AsyncRead + Unpin>> {
+    pub fn into_inner(self) -> async_tar::Archive<Box<dyn futures::io::AsyncRead + Unpin + Send>> {
         self.archive
     }
 }
 
 /// Resolve the `control` file from the `control.tar` file within a `.deb` archive.
-pub fn resolve_control_file(reader: impl Read) -> Result<BinaryPackageControlFile<'static>> {
+pub fn resolve_control_file(reader: impl Read + Send) -> Result<BinaryPackageControlFile<'static>> {
     let mut reader = BinaryPackageReader::new(reader)?;
 
     while let Some(entry) = reader.next_entry() {
