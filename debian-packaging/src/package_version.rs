@@ -230,16 +230,24 @@ fn lexical_compare(a: &str, b: &str) -> Ordering {
     loop {
         let ord = match (a_chars.next(), b_chars.next()) {
             (Some('~'), Some('~')) => Ordering::Equal,
+
+            // tilde vs any character
             (Some('~'), _) => Ordering::Less,
+            (_, Some('~')) => Ordering::Greater,
+
+            // any character vs end of string
             (Some(_), None) => Ordering::Greater,
-            (None, Some('~')) => Ordering::Greater,
             (None, Some(_)) => Ordering::Less,
+
+            // alphanumeric vs non-alphanumeric
             (Some(a), Some(b)) if a.is_ascii_alphabetic() && !b.is_ascii_alphabetic() => {
                 Ordering::Less
             }
             (Some(a), Some(b)) if !a.is_ascii_alphabetic() && b.is_ascii_alphabetic() => {
                 Ordering::Greater
             }
+
+            // fallback cases
             (Some(a), Some(b)) => a.cmp(&b),
             (None, None) => break,
         };
@@ -400,6 +408,8 @@ mod test {
         assert_eq!(lexical_compare("~", "~~a"), Ordering::Greater);
         assert_eq!(lexical_compare("~", ""), Ordering::Less);
         assert_eq!(lexical_compare("", "~"), Ordering::Greater);
+        assert_eq!(lexical_compare("~", "a"), Ordering::Less);
+        assert_eq!(lexical_compare("a", "~"), Ordering::Greater);
         assert_eq!(lexical_compare("", "a"), Ordering::Less);
         assert_eq!(lexical_compare("a", ""), Ordering::Greater);
         assert_eq!(lexical_compare("a", "b"), Ordering::Less);
