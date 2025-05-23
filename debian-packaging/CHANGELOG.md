@@ -6,7 +6,8 @@
 
 Released on ReleaseDate.
 
-* `Send` added to various traits that were previously just `Read`.
+* `Send` added to various traits that were previously just `Read`. (#25)
+* Fixed version comparisons of tilde against other characters. (#27)
 * MSRV 1.75 -> 1.88.
 * Migrated from `xz2` crate to `liblzma` (#29)
 
