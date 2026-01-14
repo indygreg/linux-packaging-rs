@@ -54,7 +54,7 @@ impl DebCompression {
                 encoder.finish().into_result()?;
             }
             Self::Xz(level) => {
-                let mut encoder = xz2::write::XzEncoder::new(buffer, *level);
+                let mut encoder = liblzma::write::XzEncoder::new(buffer, *level);
                 std::io::copy(reader, &mut encoder)?;
                 buffer = encoder.finish()?;
             }
