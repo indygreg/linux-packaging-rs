@@ -18,12 +18,10 @@ path = "src/main.rs"
 [dependencies]
 anyhow = "1.0.100"
 clap = "4.5.54"
-cpio = "0.4.1"
 futures = "0.3.31"
 futures-util = "0.3.31"
 iced-x86 = "1.21.0"
 indoc = "2.0.7"
-liblzma = { version = "0.4.5", features = ["static"] }
 num_cpus = "1.17.0"
 object = "0.38.1"
 once_cell = "1.21.3"
@@ -32,15 +30,10 @@ rusqlite = { version = "0.38.0", features = ["bundled", "fallible_uint"] }
 symbolic-demangle = "12.17.1"
 tokio = { version = "1.49.0", features = ["full"] }
 url = "2.5.8"
-zstd = "0.13.3"
 
 [dependencies.debian-packaging]
 version = "0.18.0"
 path = "../debian-packaging"
-
-[dependencies.rpm-repository]
-version = "0.3.0"
-path = "../rpm-repository"
 
 # rpm-rs seems to be unmaintained and its old dependencies are holding us back.
 # Disabled until we figure out a path forward.
