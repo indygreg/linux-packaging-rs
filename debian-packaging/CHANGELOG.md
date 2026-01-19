@@ -12,6 +12,7 @@ Released on ReleaseDate.
 * Migrated from `xz2` crate to `liblzma` (#29)
 * `mailparse` 0.15 -> 0.16.
 * `strum` 0.26 -> 0.27.
+* `thiserror` 1.0 -> 2.0.
 
 ## 0.18.0
 

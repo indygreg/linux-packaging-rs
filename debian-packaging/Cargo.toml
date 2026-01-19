@@ -40,7 +40,7 @@ smallvec = "1.15.1"
 strum = { version = "0.27.2", features = ["derive"] }
 strum_macros = "0.27.2"
 tar = "0.4.44"
-thiserror = "1.0.69"
+thiserror = "2.0.18"
 tokio = { version = "1.49.0", default-features = false, optional = true }
 url = "2.5.8"
 zstd = "0.13.3"

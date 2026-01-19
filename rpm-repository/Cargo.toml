@@ -20,7 +20,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde-xml-rs = "0.6.0"
 sha-1 = "0.10.1"
 sha2 = "0.10.9"
-thiserror = "1.0.69"
+thiserror = "2.0.18"
 tokio = { version = "1.49.0", features = ["macros"] }
 url = "2.5.8"
 
