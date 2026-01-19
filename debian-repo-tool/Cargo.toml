@@ -2,7 +2,7 @@
 name = "debian-repo-tool"
 version = "0.9.0"
 edition = "2021"
-rust-version = "1.75"
+rust-version = "1.88.0"
 authors = ["Gregory Szorc <gregory.szorc@gmail.com>"]
 license = "MPL-2.0"
 description = "CLI tool to interact with Debian repositories"

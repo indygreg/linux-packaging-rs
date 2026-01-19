@@ -6,6 +6,7 @@
 
 Released on ReleaseDate.
 
+* MSRV 1.75 -> 1.88.
 * Migrated from `xz2` crate to `liblzma` (#29)
 
 ## 0.18.0
