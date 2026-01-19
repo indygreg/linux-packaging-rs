@@ -20,7 +20,7 @@ fn reader_from_filename(extension: &str, data: std::io::Cursor<Vec<u8>>) -> Resu
     match extension {
         "" => Ok(Box::new(data)),
         ".gz" => Ok(Box::new(libflate::gzip::Decoder::new(data)?)),
-        ".xz" => Ok(Box::new(xz2::read::XzDecoder::new(data))),
+        ".xz" => Ok(Box::new(liblzma::read::XzDecoder::new(data))),
         ".zst" => Ok(Box::new(zstd::Decoder::new(data)?)),
         _ => Err(DebianError::DebUnknownCompression(extension.to_string())),
     }

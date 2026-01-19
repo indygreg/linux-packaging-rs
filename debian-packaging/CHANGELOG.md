@@ -6,6 +6,8 @@
 
 Released on ReleaseDate.
 
+* Migrated from `xz2` crate to `liblzma` (#29)
+
 ## 0.18.0
 
 Released on 2024-11-02.
