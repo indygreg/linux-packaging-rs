@@ -58,7 +58,7 @@ impl<'a> ControlFieldValue<'a> {
     /// [Self::Folded] and [Self::Multiline] may emit multiple items.
     ///
     /// For variants stored as multiple lines, leading whitespace will be trimmed, as necessary.
-    pub fn iter_lines(&self) -> Box<(dyn Iterator<Item = &str> + '_)> {
+    pub fn iter_lines(&self) -> Box<dyn Iterator<Item = &str> + '_> {
         match self {
             Self::Simple(v) => Box::new([v.as_ref()].into_iter()),
             Self::Folded(values) => Box::new(values.lines().map(|x| x.trim_start())),
@@ -69,7 +69,7 @@ impl<'a> ControlFieldValue<'a> {
     /// Obtain an iterator over words in the string value.
     ///
     /// The result may be non-meaningful for multiple line variants.
-    pub fn iter_words(&self) -> Box<(dyn Iterator<Item = &str> + '_)> {
+    pub fn iter_words(&self) -> Box<dyn Iterator<Item = &str> + '_> {
         Box::new(self.as_ref().split_ascii_whitespace())
     }
 
@@ -161,21 +161,21 @@ impl<'a> ControlField<'a> {
     }
 
     /// Obtain an iterator of words in the value.
-    pub fn iter_words(&self) -> Box<(dyn Iterator<Item = &str> + '_)> {
+    pub fn iter_words(&self) -> Box<dyn Iterator<Item = &str> + '_> {
         Box::new(self.value.as_ref().split_ascii_whitespace())
     }
 
     /// Obtain an iterator of lines in the value.
     ///
     /// Leading whitespace from each line is stripped.
-    pub fn iter_lines(&self) -> Box<(dyn Iterator<Item = &str> + '_)> {
+    pub fn iter_lines(&self) -> Box<dyn Iterator<Item = &str> + '_> {
         Box::new(self.value.lines().map(|x| x.trim_start()))
     }
 
     /// Obtain an iterator of comma delimited values in the value.
     ///
     /// Whitespace surrounding the comma is trimmed.
-    pub fn iter_comma_delimited(&self) -> Box<(dyn Iterator<Item = &str> + '_)> {
+    pub fn iter_comma_delimited(&self) -> Box<dyn Iterator<Item = &str> + '_> {
         Box::new(self.value.as_ref().split(',').map(|v| v.trim()))
     }
 
@@ -253,7 +253,7 @@ impl<'a> ControlParagraph<'a> {
     }
 
     /// Obtain a mutable reference to the field with a given name.
-    pub fn field_mut(&mut self, name: &str) -> Option<&'a mut ControlField> {
+    pub fn field_mut(&mut self, name: &str) -> Option<&'a mut ControlField<'_>> {
         self.fields
             .iter_mut()
             .find(|f| f.name.as_ref().to_lowercase() == name.to_lowercase())
@@ -324,13 +324,13 @@ impl<'a> ControlParagraph<'a> {
     }
 
     /// Obtain an iterator of words in the named field.
-    pub fn iter_field_words(&self, name: &str) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn iter_field_words(&self, name: &str) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.field(name)
             .map(|f| Box::new(f.value.split_ascii_whitespace()) as Box<dyn Iterator<Item = &str>>)
     }
 
     /// Obtain an iterator of lines in the named field.
-    pub fn iter_field_lines(&self, name: &str) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn iter_field_lines(&self, name: &str) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.field(name).map(|f| f.iter_lines())
     }
 
@@ -338,7 +338,7 @@ impl<'a> ControlParagraph<'a> {
     pub fn iter_field_comma_delimited(
         &self,
         name: &str,
-    ) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.field(name).map(|f| f.iter_comma_delimited())
     }
 

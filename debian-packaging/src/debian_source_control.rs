@@ -198,14 +198,14 @@ impl<'a> DebianSourceControlFile<'a> {
     /// The binary packages this source package produces.
     ///
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-binary>.
-    pub fn binary(&self) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn binary(&self) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.iter_field_comma_delimited("Binary")
     }
 
     /// The architectures this source package will build for.
     ///
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-architecture>.
-    pub fn architecture(&self) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn architecture(&self) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.iter_field_words("Architecture")
     }
 
@@ -233,7 +233,7 @@ impl<'a> DebianSourceControlFile<'a> {
     /// The list of uploaders and co-maintainers.
     ///
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-uploaders>.
-    pub fn uploaders(&self) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn uploaders(&self) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.iter_field_comma_delimited("Uploaders")
     }
 
@@ -247,7 +247,7 @@ impl<'a> DebianSourceControlFile<'a> {
     /// Test suites.
     ///
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-testsuite>.
-    pub fn testsuite(&self) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn testsuite(&self) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.iter_field_comma_delimited("Testsuite")
     }
 
@@ -300,7 +300,7 @@ impl<'a> DebianSourceControlFile<'a> {
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-package-list>.
     pub fn package_list(
         &self,
-    ) -> Option<Box<(dyn Iterator<Item = Result<DebianSourceControlFilePackage<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<DebianSourceControlFilePackage<'_>>> + '_>> {
         if let Some(iter) = self.iter_field_lines("Package-List") {
             Some(Box::new(iter.map(move |v| {
                 let mut words = v.split_ascii_whitespace();
@@ -337,7 +337,7 @@ impl<'a> DebianSourceControlFile<'a> {
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-checksums>.
     pub fn checksums_sha1(
         &self,
-    ) -> Option<Box<(dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_>> {
         self.iter_files("Checksums-Sha1", ChecksumType::Sha1)
     }
 
@@ -346,7 +346,7 @@ impl<'a> DebianSourceControlFile<'a> {
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-checksums>.
     pub fn checksums_sha256(
         &self,
-    ) -> Option<Box<(dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_>> {
         self.iter_files("Checksums-Sha256", ChecksumType::Sha256)
     }
 
@@ -355,7 +355,7 @@ impl<'a> DebianSourceControlFile<'a> {
     /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-files>.
     pub fn files(
         &self,
-    ) -> Result<Box<(dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_)>> {
+    ) -> Result<Box<dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_>> {
         self.iter_files("Files", ChecksumType::Md5)
             .ok_or_else(|| DebianError::ControlRequiredFieldMissing("Files".to_string()))
     }
@@ -364,7 +364,7 @@ impl<'a> DebianSourceControlFile<'a> {
         &self,
         field: &str,
         checksum: ChecksumType,
-    ) -> Option<Box<(dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<DebianSourceControlFileEntry<'_>>> + '_>> {
         if let Some(iter) = self.iter_field_lines(field) {
             Some(Box::new(iter.map(move |v| {
                 // Values are of form: <digest> <size> <path>
@@ -401,7 +401,7 @@ impl<'a> DebianSourceControlFile<'a> {
     pub fn file_fetches(
         &self,
         checksum: ChecksumType,
-    ) -> Result<Box<(dyn Iterator<Item = Result<DebianSourceControlFileFetch>> + '_)>> {
+    ) -> Result<Box<dyn Iterator<Item = Result<DebianSourceControlFileFetch>> + '_>> {
         let entries = match checksum {
             ChecksumType::Md5 => self.files()?,
             ChecksumType::Sha1 => self.checksums_sha1().ok_or_else(|| {

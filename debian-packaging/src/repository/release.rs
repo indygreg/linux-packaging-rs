@@ -931,14 +931,14 @@ impl<'a> ReleaseFile<'a> {
     ///
     /// These are areas within the repository. Values may contain path characters.
     /// e.g. `main`, `updates/main`.
-    pub fn components(&self) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn components(&self) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.iter_field_words("Components")
     }
 
     /// Debian machine architectures supported by this repository.
     ///
     /// e.g. `all`, `amd64`, `arm64`.
-    pub fn architectures(&self) -> Option<Box<(dyn Iterator<Item = &str> + '_)>> {
+    pub fn architectures(&self) -> Option<Box<dyn Iterator<Item = &str> + '_>> {
         self.iter_field_words("Architectures")
     }
 
@@ -994,7 +994,7 @@ impl<'a> ReleaseFile<'a> {
     pub fn iter_index_files(
         &self,
         checksum: ChecksumType,
-    ) -> Option<Box<(dyn Iterator<Item = Result<ReleaseFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<ReleaseFileEntry<'_>>> + '_>> {
         if let Some(iter) = self.iter_field_lines(checksum.field_name()) {
             Some(Box::new(iter.map(move |v| {
                 // Values are of form: <digest> <size> <path>
@@ -1031,7 +1031,7 @@ impl<'a> ReleaseFile<'a> {
     pub fn iter_classified_index_files(
         &self,
         checksum: ChecksumType,
-    ) -> Option<Box<(dyn Iterator<Item = Result<ClassifiedReleaseFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<ClassifiedReleaseFileEntry<'_>>> + '_>> {
         if let Some(iter) = self.iter_index_files(checksum) {
             Some(Box::new(iter.map(|entry| match entry {
                 Ok(entry) => {
@@ -1137,7 +1137,7 @@ impl<'a> ReleaseFile<'a> {
     pub fn iter_contents_indices(
         &self,
         checksum: ChecksumType,
-    ) -> Option<Box<(dyn Iterator<Item = Result<ContentsFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<ContentsFileEntry<'_>>> + '_>> {
         if let Some(iter) = self.iter_index_files(checksum) {
             Some(Box::new(iter.filter_map(|entry| match entry {
                 Ok(entry) => match ContentsFileEntry::try_from(entry) {
@@ -1162,7 +1162,7 @@ impl<'a> ReleaseFile<'a> {
     pub fn iter_packages_indices(
         &self,
         checksum: ChecksumType,
-    ) -> Option<Box<(dyn Iterator<Item = Result<PackagesFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<PackagesFileEntry<'_>>> + '_>> {
         if let Some(iter) = self.iter_index_files(checksum) {
             Some(Box::new(iter.filter_map(|entry| match entry {
                 Ok(entry) => match PackagesFileEntry::try_from(entry) {
@@ -1213,7 +1213,7 @@ impl<'a> ReleaseFile<'a> {
     pub fn iter_sources_indices(
         &self,
         checksum: ChecksumType,
-    ) -> Option<Box<(dyn Iterator<Item = Result<SourcesFileEntry<'_>>> + '_)>> {
+    ) -> Option<Box<dyn Iterator<Item = Result<SourcesFileEntry<'_>>> + '_>> {
         if let Some(iter) = self.iter_index_files(checksum) {
             Some(Box::new(iter.filter_map(|entry| match entry {
                 Ok(entry) => match SourcesFileEntry::try_from(entry) {

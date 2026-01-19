@@ -573,7 +573,7 @@ impl<'cf> RepositoryBuilder<'cf> {
         &self,
         component: impl ToString,
         architecture: impl ToString,
-    ) -> Box<dyn Iterator<Item = &'_ ControlParagraph> + Send + '_> {
+    ) -> Box<dyn Iterator<Item = &'_ ControlParagraph<'_>> + Send + '_> {
         if let Some(packages) = self
             .binary_packages
             .get(&(component.to_string(), architecture.to_string()))

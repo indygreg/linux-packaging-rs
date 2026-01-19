@@ -690,7 +690,7 @@ pub trait ReleaseReader: DataResolver + Sync {
         component: Option<&str>,
         architecture: &str,
         is_installer: bool,
-    ) -> Result<ContentsFileEntry> {
+    ) -> Result<ContentsFileEntry<'_>> {
         let component = component.map(Cow::from);
 
         let entries = self
