@@ -103,7 +103,7 @@ impl ContentsFile {
 
         for line in self.as_lines() {
             writer.write_all(line.as_bytes())?;
-            bytes_count += line.as_bytes().len();
+            bytes_count += line.len();
         }
 
         Ok(bytes_count)

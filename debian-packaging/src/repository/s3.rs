@@ -141,7 +141,7 @@ impl RepositoryWriter for S3Writer {
                 }
                 Err(e) => Err(DebianError::RepositoryIoPath(
                     path.to_string(),
-                    std::io::Error::new(std::io::ErrorKind::Other, format!("S3 error: {:?}", e)),
+                    std::io::Error::other(format!("S3 error: {:?}", e)),
                 )),
             }
         } else {
@@ -164,7 +164,7 @@ impl RepositoryWriter for S3Writer {
                 }
                 Err(e) => Err(DebianError::RepositoryIoPath(
                     path.to_string(),
-                    std::io::Error::new(std::io::ErrorKind::Other, format!("S3 error: {:?}", e)),
+                    std::io::Error::other(format!("S3 error: {:?}", e)),
                 )),
             }
         }
@@ -201,7 +201,7 @@ impl RepositoryWriter for S3Writer {
             }),
             Err(e) => Err(DebianError::RepositoryIoPath(
                 path.to_string(),
-                std::io::Error::new(std::io::ErrorKind::Other, format!("S3 error: {:?}", e)),
+                std::io::Error::other(format!("S3 error: {:?}", e)),
             )),
         }
     }
@@ -231,8 +231,7 @@ pub async fn get_bucket_region_with_client(
                 Ok(Region::UsEast1)
             }
         }
-        Err(e) => Err(DebianError::Io(std::io::Error::new(
-            std::io::ErrorKind::Other,
+        Err(e) => Err(DebianError::Io(std::io::Error::other(
             format!("S3 error: {:?}", e),
         ))),
     }

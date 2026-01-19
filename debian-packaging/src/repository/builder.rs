@@ -46,6 +46,7 @@ pub const NO_SIGNING_KEY: Option<(&pgp::SignedSecretKey, fn() -> String)> = None
 ///
 /// This type effectively controls where `.deb` files will be placed under the repository root.
 #[derive(Clone, Copy, Debug)]
+#[derive(Default)]
 pub enum PoolLayout {
     /// File paths are `<component>/<name_prefix>/<filename>`.
     ///
@@ -57,14 +58,10 @@ pub enum PoolLayout {
     /// For example, file `zstd_1.4.8+dfsg-2.1_amd64.deb` in the `main` component will be mapped to
     /// `pool/main/libz/libzstd/zstd_1.4.8+dfsg-2.1_amd64.deb` and `python3.9_3.9.9-1_arm64.deb` in
     /// the `main` component will be mapped to `pool/main/p/python3.9/python3.9_3.9.9-1_arm64.deb`.
+    #[default]
     ComponentThenNamePrefix,
 }
 
-impl Default for PoolLayout {
-    fn default() -> Self {
-        Self::ComponentThenNamePrefix
-    }
-}
 
 impl PoolLayout {
     /// Compute the path to a file given the source package name and its filename.
@@ -628,7 +625,7 @@ impl<'cf> RepositoryBuilder<'cf> {
     ) -> impl AsyncRead + '_ {
         futures::stream::iter(
             self.iter_component_binary_packages(component, architecture)
-                .map(|p| Ok(format!("{}\n", p.to_string()))),
+                .map(|p| Ok(format!("{}\n", p))),
         )
         .into_async_read()
     }

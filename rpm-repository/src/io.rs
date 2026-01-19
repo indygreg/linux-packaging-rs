@@ -164,8 +164,7 @@ where
                             let got_digest = hasher.finalize();
 
                             if got_digest.as_ref() != this.expected_digest.digest_bytes() {
-                                return Poll::Ready(Err(std::io::Error::new(
-                                    std::io::ErrorKind::Other,
+                                return Poll::Ready(Err(std::io::Error::other(
                                     format!(
                                         "digest mismatch of retrieved content: expected {}, got {}",
                                         this.expected_digest.digest_hex(),
@@ -176,8 +175,7 @@ where
                         }
                     }
                     std::cmp::Ordering::Greater => {
-                        return Poll::Ready(Err(std::io::Error::new(
-                            std::io::ErrorKind::Other,
+                        return Poll::Ready(Err(std::io::Error::other(
                             format!(
                                 "extra bytes read: expected {}; got {}",
                                 this.expected_size, this.bytes_read

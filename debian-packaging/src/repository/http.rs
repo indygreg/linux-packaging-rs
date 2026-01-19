@@ -34,8 +34,7 @@ async fn fetch_url(
     let res = client.get(request_url.clone()).send().await.map_err(|e| {
         DebianError::RepositoryIoPath(
             path.to_string(),
-            std::io::Error::new(
-                std::io::ErrorKind::Other,
+            std::io::Error::other(
                 format!("error sending HTTP request: {:?}", e),
             ),
         )
@@ -53,8 +52,7 @@ async fn fetch_url(
         } else {
             DebianError::RepositoryIoPath(
                 path.to_string(),
-                std::io::Error::new(
-                    std::io::ErrorKind::Other,
+                std::io::Error::other(
                     format!("bad HTTP status code: {:?}", e),
                 ),
             )
@@ -63,7 +61,7 @@ async fn fetch_url(
 
     Ok(Box::pin(
         res.bytes_stream()
-            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, format!("{:?}", e)))
+            .map_err(|e| std::io::Error::other(format!("{:?}", e)))
             .into_async_read(),
     ))
 }

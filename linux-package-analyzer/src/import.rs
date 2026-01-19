@@ -188,8 +188,8 @@ impl PackageFile {
     }
 }
 
-async fn fetch_debian_package<'repo, 'fetch>(
-    repo: &'repo (impl RepositoryRootReader + ?Sized),
+async fn fetch_debian_package<'fetch>(
+    repo: &(impl RepositoryRootReader + ?Sized),
     fetch: BinaryPackageFetch<'fetch>,
 ) -> Result<(
     BinaryPackageControlFile<'fetch>,
@@ -204,7 +204,7 @@ async fn fetch_debian_package<'repo, 'fetch>(
     Ok((cf, reader, size))
 }
 
-async fn process_debian_package<'cf>(
+async fn process_debian_package(
     mut deb_reader: BinaryPackageReader<std::io::Cursor<Vec<u8>>>,
     package_size: u64,
     url: String,

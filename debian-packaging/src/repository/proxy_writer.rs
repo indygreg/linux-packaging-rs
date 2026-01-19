@@ -104,8 +104,7 @@ impl<W: RepositoryWriter + Send> RepositoryWriter for ProxyWriter<W> {
             .map_err(|_| {
                 DebianError::RepositoryIoPath(
                     path.to_string(),
-                    std::io::Error::new(
-                        std::io::ErrorKind::Other,
+                    std::io::Error::other(
                         "error acquiring write paths mutex",
                     ),
                 )
