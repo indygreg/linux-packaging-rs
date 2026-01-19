@@ -49,7 +49,7 @@ pub struct RepoMdData {
     /// Size in bytes of the file as stored in the repository.
     pub size: Option<u64>,
     /// Time file was created/modified.
-    pub timestamp: Option<u64>,
+    pub timestamp: Option<f64>,
     /// Content checksum of the decoded (often decompressed) file.
     #[serde(rename = "open-checksum")]
     pub open_checksum: Option<Checksum>,
@@ -98,10 +98,20 @@ mod test {
     use super::*;
 
     const FEDORA_35_REPOMD_XML: &str = include_str!("../testdata/fedora-35-repodata.xml");
+    const WITH_FLOAT_TIMESTAMP: &str = include_str!("../testdata/with-float-timestamp.xml");
 
     #[test]
     fn fedora_35_parse() -> Result<()> {
-        RepoMd::from_xml(FEDORA_35_REPOMD_XML)?;
+        let result = RepoMd::from_xml(FEDORA_35_REPOMD_XML)?;
+        assert_eq!(result.data[0].timestamp, Some(1635225121.));
+
+        Ok(())
+    }
+
+    #[test]
+    fn with_float_timestamp_parse() -> Result<()> {
+        let result = RepoMd::from_xml(WITH_FLOAT_TIMESTAMP)?;
+        assert_eq!(result.data[0].timestamp, Some(1635225121.75));
 
         Ok(())
     }
