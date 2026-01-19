@@ -184,7 +184,7 @@ mod test {
     use super::*;
 
     const FEDORA_41_URL: &str =
-        "https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/os";
+        "https://mirror.math.princeton.edu/pub/fedora-archive/fedora/linux/releases/41/Server/x86_64/os";
 
     #[tokio::test]
     async fn fedora_41() -> Result<()> {
