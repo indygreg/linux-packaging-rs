@@ -10,6 +10,7 @@ Released on ReleaseDate.
 * Fixed version comparisons of tilde against other characters. (#27)
 * MSRV 1.75 -> 1.88.
 * Migrated from `xz2` crate to `liblzma` (#29)
+* `mailparse` 0.15 -> 0.16.
 
 ## 0.18.0
 
