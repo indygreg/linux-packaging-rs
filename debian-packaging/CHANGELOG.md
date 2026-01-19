@@ -11,6 +11,7 @@ Released on ReleaseDate.
 * MSRV 1.75 -> 1.88.
 * Migrated from `xz2` crate to `liblzma` (#29)
 * `mailparse` 0.15 -> 0.16.
+* `strum` 0.26 -> 0.27.
 
 ## 0.18.0
 

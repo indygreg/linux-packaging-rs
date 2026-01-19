@@ -37,8 +37,8 @@ sha-1 = "0.10.1"
 sha2 = "0.10.9"
 simple-file-manifest = "0.11.0"
 smallvec = "1.15.1"
-strum = { version = "0.26.3", features = ["derive"] }
-strum_macros = "0.26.4"
+strum = { version = "0.27.2", features = ["derive"] }
+strum_macros = "0.27.2"
 tar = "0.4.44"
 thiserror = "1.0.69"
 tokio = { version = "1.49.0", default-features = false, optional = true }
