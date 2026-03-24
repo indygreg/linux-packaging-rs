@@ -50,10 +50,10 @@ version = "0.4.37"
 features = ["bzip2", "futures-io", "gzip", "lzma", "xz", "zstd"]
 
 [dependencies.reqwest]
-version = "0.12.28"
+version = "0.13"
 optional = true
 default-features = false
-features = ["rustls-tls", "stream"]
+features = ["rustls-no-provider", "stream"]
 
 [dependencies.rusoto_core]
 version = "0.48.0"
@@ -74,6 +74,7 @@ tempfile = "3.24.0"
 tokio = { version = "1.49.0", features = ["macros", "rt"] }
 
 [features]
-default = ["http", "s3"]
+default = ["http", "rustls-default-provider", "s3"]
 http = ["reqwest"]
+rustls-default-provider = ["http", "reqwest/rustls"]
 s3 = ["dep:rusoto_core", "dep:rusoto_s3", "dep:tokio"]

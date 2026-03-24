@@ -29,6 +29,10 @@ version = "0.4.37"
 features = ["futures-io", "gzip", "xz", "zstd"]
 
 [dependencies.reqwest]
-version = "0.12.28"
+version = "0.13"
 default-features = false
-features = ["rustls-tls", "stream"]
+features = ["rustls-no-provider", "stream"]
+
+[features]
+default = ["rustls-default-provider"]
+rustls-default-provider = ["reqwest/rustls"]
