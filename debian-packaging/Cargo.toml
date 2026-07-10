@@ -14,7 +14,7 @@ readme = "README.md"
 [dependencies]
 ar = "0.9.0"
 async-std = { version = "1.13.2", features = ["unstable"] }
-async-tar = "0.5.1"
+async-tar = "0.6.1"
 async-trait = "0.1.89"
 bytes = "1.11.1"
 chrono = "0.4.43"
